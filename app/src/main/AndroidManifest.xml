@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="danyil.karabinovskyi.studenthub">
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".core.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,15 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentHub">
         <activity
-            android:name=".MainActivity"
+            android:name=".features.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.StudentHub.NoActionBar">
+            android:theme="@style/Theme.App.Starting"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="danyil.karabinovskyi.studenthub.features.auth.presentation.document_scan.AppScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
     </application>
 
