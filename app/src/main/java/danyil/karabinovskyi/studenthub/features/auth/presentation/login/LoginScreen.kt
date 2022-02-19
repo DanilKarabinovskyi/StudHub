@@ -11,19 +11,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -35,39 +34,62 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import danyil.karabinovskyi.studenthub.R
+import danyil.karabinovskyi.studenthub.common.model.AuthError
+import danyil.karabinovskyi.studenthub.common.model.UiEvent
+import danyil.karabinovskyi.studenthub.common.model.asString
 import danyil.karabinovskyi.studenthub.components.buttons.RoundedButton
-import danyil.karabinovskyi.studenthub.components.dialogs.EventDialog
 import danyil.karabinovskyi.studenthub.components.text_fields.TransparentTextField
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
-    state: LoginState,
-    onLogin: (String, String) -> Unit,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    viewModel: LoginViewModel = hiltViewModel(),
     onNavigateToRegister: () -> Unit,
-    onDismissDialog: () -> Unit
+    onLogin: () -> Unit = {},
 ) {
-
-    val codeValue = rememberSaveable{ mutableStateOf("") }
-    val passwordValue = rememberSaveable{ mutableStateOf("") }
+    val state = viewModel.state.value
+    val codeState = viewModel.codeState.value
+    val passwordState = viewModel.passwordState.value
+    val codeValue = rememberSaveable { mutableStateOf("") }
+    val passwordValue = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
+                }
+                is UiEvent.OnLogin -> {
+                    onLogin()
+                }
+                else -> {}
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.secondaryVariant)
-    ){
+    ) {
         Image(
-            painter = painterResource(id = R.drawable.login_photo),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Login Image",
-            contentScale = ContentScale.Inside
+            contentScale = ContentScale.FillWidth,
         )
 
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
-        ){
+        ) {
             ConstraintLayout {
 
                 val (surface, fab) = createRefs()
@@ -84,13 +106,13 @@ fun LoginScreen(
                         topStartPercent = 8,
                         topEndPercent = 8
                     )
-                ){
+                ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
                         verticalArrangement = Arrangement.SpaceEvenly
-                    ){
+                    ) {
                         Text(
                             text = "Welcome Back!",
                             style = MaterialTheme.typography.h4.copy(
@@ -111,9 +133,12 @@ fun LoginScreen(
                                 .padding(horizontal = 16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ){
+                        ) {
                             TransparentTextField(
-                                textFieldValue = codeValue,
+                                text = codeState.text,
+                                onValueChange = {
+                                    viewModel.onEvent(LoginEvent.EnteredCode(it))
+                                },
                                 textLabel = "Code",
                                 keyboardType = KeyboardType.Email,
                                 keyboardActions = KeyboardActions(
@@ -121,20 +146,30 @@ fun LoginScreen(
                                         focusManager.moveFocus(FocusDirection.Down)
                                     }
                                 ),
+                                error = when (codeState.error) {
+                                    is AuthError.FieldEmpty -> stringResource(id = R.string.error_field_empty)
+                                    else -> ""
+                                },
                                 imeAction = ImeAction.Next
                             )
 
                             TransparentTextField(
-                                textFieldValue = passwordValue,
+                                text = passwordState.text,
+                                onValueChange = {
+                                    viewModel.onEvent(LoginEvent.EnteredPassword(it))
+                                },
                                 textLabel = "Password",
                                 keyboardType = KeyboardType.Password,
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                         focusManager.clearFocus()
-
-                                        onLogin(codeValue.value, passwordValue.value)
+                                        viewModel.onEvent(LoginEvent.Login)
                                     }
                                 ),
+                                error = when (passwordState.error) {
+                                    is AuthError.FieldEmpty -> stringResource(id = R.string.error_field_empty)
+                                    else -> ""
+                                },
                                 imeAction = ImeAction.Done,
                                 trailingIcon = {
                                     IconButton(
@@ -143,7 +178,7 @@ fun LoginScreen(
                                         }
                                     ) {
                                         Icon(
-                                            imageVector = if(passwordVisibility) {
+                                            imageVector = if (passwordVisibility) {
                                                 Icons.Default.Visibility
                                             } else {
                                                 Icons.Default.VisibilityOff
@@ -152,7 +187,7 @@ fun LoginScreen(
                                         )
                                     }
                                 },
-                                visualTransformation = if(passwordVisibility) {
+                                visualTransformation = if (passwordVisibility) {
                                     VisualTransformation.None
                                 } else {
                                     PasswordVisualTransformation()
@@ -174,9 +209,8 @@ fun LoginScreen(
                         ) {
                             RoundedButton(
                                 text = "Login",
-                                displayProgressBar = state.displayProgressBar,
                                 onClick = {
-                                    onLogin(codeValue.value, passwordValue.value)
+                                    viewModel.onEvent(LoginEvent.Login)
                                 }
                             )
 
@@ -187,7 +221,7 @@ fun LoginScreen(
                                         style = SpanStyle(
                                             color = MaterialTheme.colors.secondaryVariant
                                         )
-                                    ){
+                                    ) {
                                         append("Do not have an Account?")
                                     }
                                     withStyle(
@@ -195,11 +229,11 @@ fun LoginScreen(
                                             color = MaterialTheme.colors.primary,
                                             fontWeight = FontWeight.Bold
                                         )
-                                    ){
+                                    ) {
                                         append("Sign up")
                                     }
                                 }
-                            ){
+                            ) {
                                 onNavigateToRegister()
                             }
                         }
@@ -227,12 +261,8 @@ fun LoginScreen(
                 }
             }
         }
-
-        if(state.errorMessage != null){
-            EventDialog(
-                errorMessage = state.errorMessage,
-                onDismiss = onDismissDialog
-            )
+        if (state.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Center))
         }
     }
 }

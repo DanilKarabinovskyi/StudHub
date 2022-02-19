@@ -23,7 +23,6 @@ class AppScanActivity: ScanActivity() {
     }
 
     override fun onSuccess(scannerResults: ScannerResults) {
-        var i = scannerResults
         val imgFile = scannerResults.croppedImageFile
 
         if (imgFile != null) {
