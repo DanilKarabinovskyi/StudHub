@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import danyil.karabinovskyi.studenthub.common.utils.Constants
 import danyil.karabinovskyi.studenthub.common.utils.SharedPrefs
@@ -55,7 +54,7 @@ object NetworkModule {
 
 
     @Provides
-    fun provideRequestInterceptor(prefs: SharedPrefs) : RequestInterceptor {
+    fun provideRequestInterceptor(prefs: SharedPrefs): RequestInterceptor {
         return RequestInterceptor(prefs)
     }
 

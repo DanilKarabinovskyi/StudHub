@@ -14,22 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authenticateUseCase: AuthenticateUseCase
 ): ViewModel() {
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading = _isLoading.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            when(authenticateUseCase()) {
-                is Resource.Success -> {
-                    _isLoading.value = false
-                }
-                is Resource.Error -> {
-                    _isLoading.value = false
-                }
-            }
-        }
-    }
 }

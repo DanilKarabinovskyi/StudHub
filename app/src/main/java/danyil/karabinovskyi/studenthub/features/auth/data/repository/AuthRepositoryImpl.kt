@@ -6,6 +6,7 @@ import danyil.karabinovskyi.studenthub.common.model.*
 import danyil.karabinovskyi.studenthub.common.utils.SharedPrefs
 import danyil.karabinovskyi.studenthub.features.auth.domain.AuthRepository
 import danyil.karabinovskyi.studenthub.features.auth.data.remote.api.AuthApi
+import danyil.karabinovskyi.studenthub.features.auth.data.remote.entity.VerifyResponse
 import danyil.karabinovskyi.studenthub.features.auth.domain.request.LoginRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -68,12 +69,12 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun authenticate(): SimpleResource {
+    override suspend fun authenticate(): Resource<VerifyResponse> {
         return try {
             val response = api.authenticate()
             if(response.successful) {
-                if(response.data?.verified?:false){
-                    Resource.Success(Unit)
+                if(response.data != null){
+                    Resource.Success(data = response.data)
                 }else{
                     response.message?.let { msg ->
                         Resource.Error(UiText.DynamicString(msg))

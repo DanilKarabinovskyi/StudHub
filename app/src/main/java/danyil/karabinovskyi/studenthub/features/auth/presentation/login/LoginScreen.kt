@@ -53,8 +53,6 @@ fun LoginScreen(
     val state = viewModel.state.value
     val codeState = viewModel.codeState.value
     val passwordState = viewModel.passwordState.value
-    val codeValue = rememberSaveable { mutableStateOf("") }
-    val passwordValue = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
@@ -81,9 +79,10 @@ fun LoginScreen(
             .background(MaterialTheme.colors.secondaryVariant)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.login_top_photo_girl),
             contentDescription = "Login Image",
             contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Box(

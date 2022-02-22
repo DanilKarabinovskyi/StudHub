@@ -2,18 +2,22 @@ package danyil.karabinovskyi.studenthub.core.app;
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.SnackbarHost
-import androidx.compose.runtime.Composable;
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navigation
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.systemBarsPadding
+import danyil.karabinovskyi.studenthub.components.bottom_bar.BottomNavBar
 import danyil.karabinovskyi.studenthub.components.scaffold.StudentHubScaffold
 import danyil.karabinovskyi.studenthub.components.snackbar.Snackbar
 import danyil.karabinovskyi.studenthub.core.navigation.addLogin
 import danyil.karabinovskyi.studenthub.core.navigation.addRegistration
+import danyil.karabinovskyi.studenthub.core.navigation.addSplash
+import danyil.karabinovskyi.studenthub.features.home.data.HomeSections
+import danyil.karabinovskyi.studenthub.features.home.presentation.addHomeGraph
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
@@ -23,13 +27,13 @@ fun StudentHubApp() {
             val appState = rememberStudentHubAppState()
             StudentHubScaffold(
                 bottomBar = {
-//                    if (appState.shouldShowBottomBar) {
-//                        JetsnackBottomBar(
-//                            tabs = appState.bottomBarTabs,
-//                            currentRoute = appState.currentRoute!!,
-//                            navigateToRoute = appState::navigateToBottomBarRoute
-//                        )
-//                    }
+                    if (appState.shouldShowBottomBar) {
+                        BottomNavBar(
+                            tabs = appState.bottomBarTabs,
+                            currentRoute = appState.currentRoute!!,
+                            navigateToRoute = appState::navigateToBottomBarRoute
+                        )
+                    }
                 },
                 snackbarHost = {
                     SnackbarHost(
@@ -42,11 +46,10 @@ fun StudentHubApp() {
             ) { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = MainDestinations.LOGIN_ROUTE,
+                    startDestination = MainDestinations.SPLASH_ROUTE,
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     studentHubNavGraph(
-                        onSnackSelected = appState::navigateToSnackDetail,
                         upPress = appState::upPress,
                         appState.navController
                     )
@@ -57,26 +60,18 @@ fun StudentHubApp() {
 }
 
 private fun NavGraphBuilder.studentHubNavGraph(
-    onSnackSelected: (Long, NavBackStackEntry) -> Unit,
     upPress: () -> Unit,
     navController: NavHostController
 ) {
+    addSplash(navController = navController)
     addLogin(navController = navController)
     addRegistration(navController = navController)
-//    navigation(
-//        route = MainDestinations.HOME_ROUTE,
-//        startDestination = HomeSections.FEED.route
-//    ) {
-//        addHomeGraph(onSnackSelected)
-//    }
-//    composable(
-//        "${MainDestinations.SNACK_DETAIL_ROUTE}/{${MainDestinations.SNACK_ID_KEY}}",
-//        arguments = listOf(navArgument(MainDestinations.SNACK_ID_KEY) { type = NavType.LongType })
-//    ) { backStackEntry ->
-//        val arguments = requireNotNull(backStackEntry.arguments)
-//        val snackId = arguments.getLong(MainDestinations.SNACK_ID_KEY)
-//        SnackDetail(snackId, upPress)
-//    }
+    navigation(
+        route = MainDestinations.HOME_ROUTE,
+        startDestination = HomeSections.FEED.route
+    ) {
+        addHomeGraph()
+    }
 }
 
 
