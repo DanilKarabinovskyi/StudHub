@@ -1,19 +1,20 @@
 package danyil.karabinovskyi.studenthub.core.navigation
 
+import android.content.Intent
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.composable
+import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.features.auth.presentation.login.LoginScreen
-import danyil.karabinovskyi.studenthub.features.auth.presentation.login.LoginViewModel
 import danyil.karabinovskyi.studenthub.features.auth.presentation.registration.RegistrationScreen
-import danyil.karabinovskyi.studenthub.features.auth.presentation.registration.RegistrationViewModel
 import danyil.karabinovskyi.studenthub.features.auth.presentation.splash.SplashScreen
+import danyil.karabinovskyi.studenthub.features.posts.presentation.detail.PostDetailScreen
 
+//todo replace main navigation with navigation in every feature package
 fun NavGraphBuilder.addLogin(
     navController: NavHostController
 ) {
@@ -76,6 +77,45 @@ fun NavGraphBuilder.addRegistration(
             onBack = {
                 navController.navigateUp()
             }
+        )
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+fun NavGraphBuilder.addPostsDetail(
+    navController: NavHostController,
+    scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader
+) {
+    composable(
+        route = MainDestinations.POSTS_DETAIL + "/{postId}?shouldShowKeyboard={shouldShowKeyboard}",
+        arguments = listOf(
+            navArgument(
+                name = "postId"
+            ) {
+                type = NavType.StringType
+            },
+            navArgument(
+                name = "shouldShowKeyboard"
+            ) {
+                type = NavType.BoolType
+                defaultValue = false
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                action = Intent.ACTION_VIEW
+                uriPattern = "https://studentHub.com/{postId}"
+            }
+        )
+    ) {
+        val shouldShowKeyboard = it.arguments?.getBoolean("shouldShowKeyboard") ?: false
+        PostDetailScreen(
+            scaffoldState = scaffoldState,
+            onNavigateUp = navController::navigateUp,
+            onNavigate = navController::navigate,
+            shouldShowKeyboard = shouldShowKeyboard,
+            imageLoader = imageLoader
         )
     }
 }

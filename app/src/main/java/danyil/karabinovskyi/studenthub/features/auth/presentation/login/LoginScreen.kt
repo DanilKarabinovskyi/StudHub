@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -79,7 +78,7 @@ fun LoginScreen(
             .background(MaterialTheme.colors.secondaryVariant)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.login_top_photo_girl),
+            painter = painterResource(id = R.drawable.login_top_photo_female),
             contentDescription = "Login Image",
             contentScale = ContentScale.FillWidth,
             modifier = Modifier.fillMaxWidth()

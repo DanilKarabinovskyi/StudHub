@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import danyil.karabinovskyi.studenthub.R
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubColors
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -61,8 +63,7 @@ fun SplashScreen(
         }
     }
     Box(
-        modifier = Modifier.fillMaxSize()
-            .background(Color.Gray),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Image(

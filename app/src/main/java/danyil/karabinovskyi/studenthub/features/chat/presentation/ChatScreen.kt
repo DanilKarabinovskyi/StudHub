@@ -1,23 +1,41 @@
 package danyil.karabinovskyi.studenthub.features.chat.presentation
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import danyil.karabinovskyi.studenthub.components.surface.Surface
-import danyil.karabinovskyi.studenthub.components.text_fields.TransparentTextField
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import danyil.karabinovskyi.studenthub.R
+import danyil.karabinovskyi.studenthub.components.toolbar.StandardToolbar
 
 @Composable
 fun ChatScreen() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        TransparentTextField(
-            textLabel = "Chat",
-            keyboardType = KeyboardType.Number,
-            keyboardActions = KeyboardActions.Default,
-            imeAction = ImeAction.Default,
-            onValueChange = { }
-        )
-    }
+    StandardToolbar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.all_chats),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.onBackground
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        showBackArrow = false,
+        navActions = {
+            IconButton(onClick = {
+//                onNavigate(Screen.SearchScreen.route)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
+        }
+    )
 }

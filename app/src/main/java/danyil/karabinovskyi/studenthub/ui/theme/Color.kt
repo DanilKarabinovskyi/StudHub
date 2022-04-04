@@ -93,3 +93,13 @@ val CYAN800 = Color(0xff428e92)  // SecondaryVariant
 val BLUEGREY900 = Color(0xff000a12)  // Background
 val BLUEGREY800 = Color(0xff263238)  // Surface
 val RED800 = Color(0xffba000d)  //Error
+
+
+val DarkGray = Color(0xFF202020)
+val MediumGray = Color(0xFF404040)
+val LightGray = Color(0xFF606060)
+val TextWhite = Color(0xFFEEEEEE)
+val HintGray = Color(0xFF6D6D6D)
+val TextGray = Color(0xFFA6A6A6)
+val GreenAccent = Color(0xFF08FF04)
+val DarkerGreen = Color(0xFF029600)

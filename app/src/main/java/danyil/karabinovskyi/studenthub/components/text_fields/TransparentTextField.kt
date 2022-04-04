@@ -10,6 +10,8 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -23,8 +25,10 @@ fun TransparentTextField(
     modifier: Modifier = Modifier,
     textLabel: String,
     text: String = "",
+    hint: String = "",
     maxLength: Int = 400,
     error: String = "",
+    backgroundColor: Color = Color.Transparent,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     keyboardType: KeyboardType,
     keyboardActions: KeyboardActions,
@@ -33,10 +37,13 @@ fun TransparentTextField(
     maxLines: Int = 1,
     trailingIcon: @Composable() (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    focusRequester: FocusRequester = FocusRequester()
 ) {
     TextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester = focusRequester),
         value = text,
         onValueChange = {
             if (it.length <= maxLength) {
@@ -52,11 +59,17 @@ fun TransparentTextField(
             keyboardType = keyboardType,
             imeAction = imeAction
         ),
+        placeholder = {
+            Text(
+                text = hint,
+                style = MaterialTheme.typography.body1
+            )
+        },
         keyboardActions = keyboardActions,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.Transparent
-        )
+            backgroundColor = backgroundColor
+        ),
     )
     if (error.isNotEmpty()) {
         Text(

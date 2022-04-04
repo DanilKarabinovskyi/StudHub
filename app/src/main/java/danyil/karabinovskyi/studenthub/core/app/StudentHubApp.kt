@@ -1,30 +1,35 @@
 package danyil.karabinovskyi.studenthub.core.app;
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import coil.ImageLoader
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.systemBarsPadding
 import danyil.karabinovskyi.studenthub.components.bottom_bar.BottomNavBar
 import danyil.karabinovskyi.studenthub.components.scaffold.StudentHubScaffold
 import danyil.karabinovskyi.studenthub.components.snackbar.Snackbar
 import danyil.karabinovskyi.studenthub.core.navigation.addLogin
+import danyil.karabinovskyi.studenthub.core.navigation.addPostsDetail
 import danyil.karabinovskyi.studenthub.core.navigation.addRegistration
 import danyil.karabinovskyi.studenthub.core.navigation.addSplash
 import danyil.karabinovskyi.studenthub.features.home.data.HomeSections
 import danyil.karabinovskyi.studenthub.features.home.presentation.addHomeGraph
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
+import javax.inject.Inject
 
 @Composable
-fun StudentHubApp() {
+fun StudentHubApp(imageLoader: ImageLoader) {
     ProvideWindowInsets {
         StudentHubTheme {
-            val appState = rememberStudentHubAppState()
+            val appState = rememberStudentHubAppState(imageLoader = imageLoader)
             StudentHubScaffold(
                 bottomBar = {
                     if (appState.shouldShowBottomBar) {
@@ -51,7 +56,9 @@ fun StudentHubApp() {
                 ) {
                     studentHubNavGraph(
                         upPress = appState::upPress,
-                        appState.navController
+                        appState.navController,
+                        appState.scaffoldState,
+                        appState.imageLoader
                     )
                 }
             }
@@ -61,7 +68,9 @@ fun StudentHubApp() {
 
 private fun NavGraphBuilder.studentHubNavGraph(
     upPress: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader
 ) {
     addSplash(navController = navController)
     addLogin(navController = navController)
@@ -70,8 +79,15 @@ private fun NavGraphBuilder.studentHubNavGraph(
         route = MainDestinations.HOME_ROUTE,
         startDestination = HomeSections.FEED.route
     ) {
-        addHomeGraph()
+        addHomeGraph(navController = navController,
+            scaffoldState = scaffoldState,
+            imageLoader = imageLoader)
     }
+    addPostsDetail(
+        navController = navController,
+        scaffoldState = scaffoldState,
+        imageLoader = imageLoader
+    )
 }
 
 

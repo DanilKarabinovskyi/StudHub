@@ -92,7 +92,7 @@ fun BottomNavBar(
                             text = stringResource(section.title).uppercase(
                                 ConfigurationCompat.getLocales(
                                     LocalConfiguration.current
-                                ).get(0)
+                                ).get(0)!! // never null
                             ),
                             color = tint,
                             style = MaterialTheme.typography.button,

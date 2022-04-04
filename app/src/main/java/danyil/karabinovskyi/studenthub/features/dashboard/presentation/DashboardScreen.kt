@@ -14,7 +14,7 @@ fun DashboardScreen(
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         TransparentTextField(
-            textLabel = "Article",
+            textLabel = "Dashboard",
             keyboardType = KeyboardType.Number,
             keyboardActions = KeyboardActions.Default,
             imeAction = ImeAction.Default,

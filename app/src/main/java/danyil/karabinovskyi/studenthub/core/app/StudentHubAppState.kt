@@ -13,6 +13,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.ImageLoader
 import danyil.karabinovskyi.studenthub.common.SnackbarManager
 import danyil.karabinovskyi.studenthub.features.home.data.HomeSections
 import kotlinx.coroutines.CoroutineScope
@@ -28,24 +29,28 @@ object MainDestinations {
     const val CHAT_ROUTE = "chat"
     const val POSTS_ROUTE = "posts"
     const val EVENTS_ROUTE = "events"
+    const val POSTS_DETAIL = "posts_detail"
+    const val POSTS_CREATION = "posts_creation"
 }
 
 @Composable
 fun rememberStudentHubAppState(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController(),
+    imageLoader: ImageLoader,
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) =
-    remember(scaffoldState, navController, snackbarManager, resources, coroutineScope) {
-        StudentHubAppState(scaffoldState, navController, snackbarManager, resources, coroutineScope)
+    remember(scaffoldState, navController,imageLoader, snackbarManager, resources, coroutineScope) {
+        StudentHubAppState(scaffoldState, navController, imageLoader, snackbarManager, resources, coroutineScope)
     }
 
 @Stable
 class StudentHubAppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
+    val imageLoader: ImageLoader,
     private val snackbarManager: SnackbarManager,
     private val resources: Resources,
     coroutineScope: CoroutineScope

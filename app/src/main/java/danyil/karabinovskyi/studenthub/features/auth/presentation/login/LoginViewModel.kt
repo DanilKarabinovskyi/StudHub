@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import danyil.karabinovskyi.studenthub.common.model.Resource
 import danyil.karabinovskyi.studenthub.common.model.UiEvent
+import danyil.karabinovskyi.studenthub.common.model.UiText
 import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.core.model.states.StandardTextFieldState
 import danyil.karabinovskyi.studenthub.features.auth.domain.request.LoginRequest
@@ -59,7 +60,8 @@ class LoginViewModel @Inject constructor(
                 }
                 is Resource.Error -> {
                     state.value = state.value.copy(successLogin = false)
-//                    _eventFlow.emit(UiEvent.ShowSnackbar(loginResult.result.uiText))
+                    loginResult.result.uiText?.let { UiEvent.ShowSnackbar(it) }
+                        ?.let { _eventFlow.emit(it) }
                 }
             }
         }

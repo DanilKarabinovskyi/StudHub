@@ -22,4 +22,41 @@
     <string name="home_chats">Chats</string>
     <string name="home_more">More</string>
 
+
+    <string name="feed">Your Feed</string>
+    <string name="all_chats">All Chats</string>
+
+
+    <string name="back">Navigate back</string>
+    <string name="logout">Logout</string>
+    <string name="do_you_want_to_logout">Do you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="share_intent_text">Hey, I found a great post, check it out :)\n%s</string>
+    <string name="error_not_logged_in">Oops! Please login before doing that.</string>
+    <string name="enter_a_message">Enter a message...</string>
+    <string name="message">Send message</string>
+    <string name="delete_post">Delete post</string>
+    <string name="successfully_deleted_post">Successfully deleted post</string>
+    <string name="save_changes">Save changes</string>
+    <string name="search_for_users">Search for users</string>
+    <string name="search">Search...</string>
+    <string name="create_a_new_post">Create a new post</string>
+    <string name="create_post">Create post</string>
+    <string name="choose_image">Choose image</string>
+    <string name="post">Post</string>
+    <string name="description">Description</string>
+
+    <string name="unlike">Unlike</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
+    <string name="read_more">Read more</string>
+    <string name="x_likes">%d likes</string>
+    <string name="x_comments">%d comments</string>
+    <string name="your_comment">your comment</string>
+    <string name="send_comment">Send comment</string>
+    <string name="enter_a_comment">Enter a comment...</string>
+    <string name="comment_posted">Successfully posted comment</string>
+    <string name="label_filters">Filters</string>
 </resources>
