@@ -164,7 +164,6 @@ fun PostDetailScreen(
                                         style = MaterialTheme.typography.body2,
                                         modifier = Modifier.clickable {
 //                                            onNavigate(Screen.PersonListScreen.route + "/${post.id}")
-
                                         }
                                     )
                                 }

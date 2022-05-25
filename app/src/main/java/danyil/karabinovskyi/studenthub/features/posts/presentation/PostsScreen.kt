@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import danyil.karabinovskyi.studenthub.R
+import danyil.karabinovskyi.studenthub.common.extensions.observeLifecycle
 import danyil.karabinovskyi.studenthub.components.bottom_sheet.BottomSheet
 import danyil.karabinovskyi.studenthub.components.filter_bar.FilterBar
 import danyil.karabinovskyi.studenthub.components.post.Post
@@ -44,6 +46,7 @@ fun PostsScreen(
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    viewModel.observeLifecycle(LocalLifecycleOwner.current.lifecycle)
     ModalBottomSheetLayout(
         sheetContent = {
             BottomSheet(sortFilters, bottomSheetState, onItemClick = { filterName ->
