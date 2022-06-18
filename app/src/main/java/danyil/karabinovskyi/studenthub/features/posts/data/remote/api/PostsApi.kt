@@ -1,42 +1,47 @@
 package danyil.karabinovskyi.studenthub.features.posts.data.remote.api
 
 import danyil.karabinovskyi.studenthub.common.model.BasicApiResponse
+import danyil.karabinovskyi.studenthub.core.data.Filter
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.CommentResponse
+import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostResponse
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.CreateCommentRequest
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.CreatePostRequest
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikeUpdateRequest
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostsResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface PostsApi {
-    @GET("posts")
+    @GET("posts/")
     suspend fun getPosts(
         @Query("take") take: Int,
         @Query("skip") skip: Int,
-        @Query("order") order: String,
-        @Query("sort") sort: String,
-        @Query("tags") tags: Int,
-        @Query("socialTag") socialTag: List<String>,
-        ): BasicApiResponse<List<PostsResponse>>
+        @Query("order") order: String,     // ASC, DESC
+        @Query("sort") sort: String,       // Any field
+//        @Query("filter") filter: Filter, // "sport" etc
+        @Query("socialTag") socialTag: String, // All, My, My University
+    ): BasicApiResponse<List<PostResponse>>
 
     @Multipart
     @POST("posts")
     suspend fun createPost(
-        @Part postData: MultipartBody.Part,
-        @Part postImage: MultipartBody.Part
-    ): BasicApiResponse<Unit>
+        @Part("title") title: RequestBody,
+        @Part("body") description: RequestBody,
+        @Part("tags") tags: RequestBody,
+        @Part file: MultipartBody.Part
+    ): BasicApiResponse<PostResponse>
 
     @GET("posts/{postId}")
     suspend fun getPost(
         @Path("postId") postId: String,
-    ): BasicApiResponse<PostsResponse>
+    ): BasicApiResponse<PostResponse>
 
     @PUT("posts/post")
     suspend fun editPost(
-        @Part postData: MultipartBody.Part,
-        @Part postImage: MultipartBody.Part
-    ): BasicApiResponse<PostsResponse>
+        @Part("title") title: RequestBody,
+        @Part("body") description: RequestBody,
+        @Part("tags") tags: List<String>,
+        @Part("file") postImage: MultipartBody.Part
+    ): BasicApiResponse<PostResponse>
 
     @DELETE("posts/post")
     suspend fun deletePost(

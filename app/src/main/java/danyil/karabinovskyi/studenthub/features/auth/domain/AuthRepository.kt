@@ -4,7 +4,6 @@ import danyil.karabinovskyi.studenthub.common.model.Resource
 import danyil.karabinovskyi.studenthub.common.model.SimpleResource
 import danyil.karabinovskyi.studenthub.features.auth.data.remote.entity.VerifyResponse
 import danyil.karabinovskyi.studenthub.features.auth.domain.request.LoginRequest
-import danyil.karabinovskyi.studenthub.features.auth.domain.request.RegistrationRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 

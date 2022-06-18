@@ -30,7 +30,7 @@ object MainDestinations {
     const val POSTS_ROUTE = "posts"
     const val EVENTS_ROUTE = "events"
     const val POSTS_DETAIL = "posts_detail"
-    const val POSTS_CREATION = "posts_creation"
+    const val POSTS_CREATE_EDIT = "posts_create_edit"
 }
 
 @Composable

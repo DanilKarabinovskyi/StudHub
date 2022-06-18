@@ -35,6 +35,7 @@
     <string name="share_intent_text">Hey, I found a great post, check it out :)\n%s</string>
     <string name="error_not_logged_in">Oops! Please login before doing that.</string>
     <string name="enter_a_message">Enter a message...</string>
+    <string name="enter_a_text">Enter a text</string>
     <string name="message">Send message</string>
     <string name="delete_post">Delete post</string>
     <string name="successfully_deleted_post">Successfully deleted post</string>
@@ -45,8 +46,12 @@
     <string name="create_post">Create post</string>
     <string name="choose_image">Choose image</string>
     <string name="post">Post</string>
+    <string name="posts">Posts</string>
     <string name="description">Description</string>
-
+    <string name="post_image">Post image</string>
+    <string name="post_created">Successfully created post</string>
+    <string name="error_description_blank">The description can\'t be empty</string>
+    <string name="error_no_image_picked">Please pick a photo</string>
     <string name="unlike">Unlike</string>
     <string name="like">Like</string>
     <string name="comment">Comment</string>

@@ -3,6 +3,7 @@ package danyil.karabinovskyi.studenthub.core.di
 import android.app.Application
 import coil.ImageLoader
 import coil.decode.SvgDecoder
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +23,11 @@ object AppModule {
                 add(SvgDecoder(app))
             }
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
     }
 }

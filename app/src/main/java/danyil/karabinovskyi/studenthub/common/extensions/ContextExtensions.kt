@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import danyil.karabinovskyi.studenthub.R
 
-fun Context.sendSharePostIntent(postId: String) {
+fun Context.sendSharePostIntent(postId: Int) {
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(

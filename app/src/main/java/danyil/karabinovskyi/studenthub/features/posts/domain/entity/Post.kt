@@ -1,7 +1,7 @@
 package danyil.karabinovskyi.studenthub.features.posts.domain.entity
 
 data class Post(
-    val id: String,
+    val id: Int,
     val userId: String,
     val username: String,
     val imageUrl: String,

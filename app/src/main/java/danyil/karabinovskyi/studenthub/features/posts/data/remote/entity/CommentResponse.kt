@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class CommentResponse(
-    val id: String,
+    val id: Int,
     val username: String,
     val profilePictureUrl: String,
     val timestamp: Long,

@@ -12,6 +12,7 @@ import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.features.auth.presentation.login.LoginScreen
 import danyil.karabinovskyi.studenthub.features.auth.presentation.registration.RegistrationScreen
 import danyil.karabinovskyi.studenthub.features.auth.presentation.splash.SplashScreen
+import danyil.karabinovskyi.studenthub.features.posts.presentation.create_edit.CreateEditPostScreen
 import danyil.karabinovskyi.studenthub.features.posts.presentation.detail.PostDetailScreen
 
 //todo replace main navigation with navigation in every feature package
@@ -115,6 +116,31 @@ fun NavGraphBuilder.addPostsDetail(
             onNavigateUp = navController::navigateUp,
             onNavigate = navController::navigate,
             shouldShowKeyboard = shouldShowKeyboard,
+            imageLoader = imageLoader
+        )
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class, kotlinx.coroutines.DelicateCoroutinesApi::class)
+fun NavGraphBuilder.addPostsCreateEdit(
+    navController: NavHostController,
+    scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader
+) {
+    composable(
+        route = MainDestinations.POSTS_CREATE_EDIT + "/{postId}",
+        arguments = listOf(
+            navArgument(
+                name = "postId"
+            ) {
+                type = NavType.StringType
+            },
+        ),
+    ) {
+        CreateEditPostScreen(
+            scaffoldState = scaffoldState,
+            onNavigateUp = navController::navigateUp,
+            onNavigate = navController::navigate,
             imageLoader = imageLoader
         )
     }

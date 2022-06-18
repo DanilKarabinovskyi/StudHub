@@ -85,7 +85,7 @@ class PostDetailViewModel @Inject constructor(
     }
 
     private fun toggleLikeForParent(
-        parentId: String,
+        parentId: Int,
         parentType: Int,
         isLiked: Boolean
     ) {
@@ -212,7 +212,7 @@ class PostDetailViewModel @Inject constructor(
 
             _state.value = state.value.copy(
                 post = danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post(
-                    "2",
+                    2,
                     "2",
                     "Danyil",
                     "https://images.unsplash.com/photo-1630518615523-0d82e3985c06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -254,7 +254,7 @@ class PostDetailViewModel @Inject constructor(
             )
             val comments = mutableListOf<Comment>()
             for (i in 0..20){
-                comments.add(Comment(id = "0",
+                comments.add(Comment(id = 0,
                     username = "Danyil",
                     profilePictureUrl = "https://images.unsplash.com/photo-1630370939214-4c4041b5efc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
                     formattedTime = "08.08.2002",

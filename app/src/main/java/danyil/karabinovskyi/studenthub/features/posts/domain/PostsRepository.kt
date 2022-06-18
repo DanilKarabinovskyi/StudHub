@@ -5,20 +5,20 @@ import danyil.karabinovskyi.studenthub.common.model.Resource
 import danyil.karabinovskyi.studenthub.common.model.SimpleResource
 import danyil.karabinovskyi.studenthub.core.data.Query
 import danyil.karabinovskyi.studenthub.core.domain.model.Comment
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostsResponse
+import danyil.karabinovskyi.studenthub.features.posts.domain.entity.CreatePostRequest
 import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post
 
 interface PostsRepository {
     suspend fun getPosts(query: Query): Resource<List<Post>>
 
-    suspend fun createPost(description: String, imageUri: Uri):
-            Resource<Post>
+    suspend fun createPost(request: CreatePostRequest):
+            Resource<Unit>
 
     suspend fun getPost(postId: Int):
             Resource<Post>
 
-    suspend fun editPost(description: String, imageUri: Uri):
-            Resource<Post>
+    suspend fun editPost(request: CreatePostRequest):
+            Resource<Unit>
 
     suspend fun deletePost(postId: Int):
             Resource<Boolean>

@@ -10,9 +10,11 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,8 +33,8 @@ fun TransparentTextField(
     backgroundColor: Color = Color.Transparent,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     keyboardType: KeyboardType,
-    keyboardActions: KeyboardActions,
-    imeAction: ImeAction,
+    keyboardActions: KeyboardActions = KeyboardActions( onNext = { }),
+    imeAction: ImeAction = ImeAction.Next,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     trailingIcon: @Composable() (() -> Unit)? = null,

@@ -2,7 +2,6 @@ package danyil.karabinovskyi.studenthub.components.filter_bar
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -29,12 +28,12 @@ import danyil.karabinovskyi.studenthub.components.surface.Surface
 import danyil.karabinovskyi.studenthub.components.view.diagonalGradientBorder
 import danyil.karabinovskyi.studenthub.components.view.fadeInDiagonalGradientBorder
 import danyil.karabinovskyi.studenthub.components.view.offsetGradientBackground
-import danyil.karabinovskyi.studenthub.core.domain.model.Filter
+import danyil.karabinovskyi.studenthub.core.domain.model.FormFilter
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
 fun FilterBar(
-    filters: List<Filter>,
+    formFilters: List<FormFilter>,
     showFilterIcon: Boolean = false,
     onShowFilters: () -> Unit,
     onFilterClick: (String) -> Unit
@@ -61,20 +60,20 @@ fun FilterBar(
                 }
             }
         }
-        items(filters) { filter ->
-            FilterChip(filter = filter, shape = MaterialTheme.shapes.small, onFilterClick = {onFilterClick(filter.name)})
+        items(formFilters) { filter ->
+            FilterChip(formFilter = filter, shape = MaterialTheme.shapes.small, onFilterClick = {onFilterClick(filter.name)})
         }
     }
 }
 
 @Composable
 fun FilterChip(
-    filter: Filter,
+    formFilter: FormFilter,
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.small,
     onFilterClick: (String) -> Unit
 ) {
-    val (selected, setSelected) = filter.enabled
+    val (selected, setSelected) = formFilter.enabled
     val backgroundColor by animateColorAsState(
         if (selected) StudentHubTheme.colors.brandSecondary else StudentHubTheme.colors.uiBackground
     )
@@ -112,7 +111,7 @@ fun FilterChip(
                 .toggleable(
                     value = selected,
                     onValueChange = {
-                        onFilterClick(filter.name)
+                        onFilterClick(formFilter.name)
                         setSelected(it)
                     },
                     interactionSource = interactionSource,
@@ -122,7 +121,7 @@ fun FilterChip(
                 .then(border)
         ) {
             Text(
-                text = filter.name,
+                text = formFilter.name,
                 style = MaterialTheme.typography.caption,
                 maxLines = 1,
                 modifier = Modifier.padding(

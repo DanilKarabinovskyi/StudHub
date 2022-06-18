@@ -16,10 +16,7 @@ import com.google.accompanist.insets.systemBarsPadding
 import danyil.karabinovskyi.studenthub.components.bottom_bar.BottomNavBar
 import danyil.karabinovskyi.studenthub.components.scaffold.StudentHubScaffold
 import danyil.karabinovskyi.studenthub.components.snackbar.Snackbar
-import danyil.karabinovskyi.studenthub.core.navigation.addLogin
-import danyil.karabinovskyi.studenthub.core.navigation.addPostsDetail
-import danyil.karabinovskyi.studenthub.core.navigation.addRegistration
-import danyil.karabinovskyi.studenthub.core.navigation.addSplash
+import danyil.karabinovskyi.studenthub.core.navigation.*
 import danyil.karabinovskyi.studenthub.features.home.data.HomeSections
 import danyil.karabinovskyi.studenthub.features.home.presentation.addHomeGraph
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
@@ -84,6 +81,11 @@ private fun NavGraphBuilder.studentHubNavGraph(
             imageLoader = imageLoader)
     }
     addPostsDetail(
+        navController = navController,
+        scaffoldState = scaffoldState,
+        imageLoader = imageLoader
+    )
+    addPostsCreateEdit(
         navController = navController,
         scaffoldState = scaffoldState,
         imageLoader = imageLoader

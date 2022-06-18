@@ -10,20 +10,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import danyil.karabinovskyi.studenthub.core.domain.model.Filter
+import danyil.karabinovskyi.studenthub.core.domain.model.FormFilter
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
-fun BottomSheetItem(filter: Filter, onItemClick: (String) -> Unit) {
+fun BottomSheetItem(formFilter: FormFilter, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = { onItemClick(filter.name) })
+            .clickable(onClick = { onItemClick(formFilter.name) })
             .height(55.dp)
             .background(color = StudentHubTheme.colors.uiFloated)
             .padding(start = 15.dp), verticalAlignment = Alignment.CenterVertically
     ) {
-        filter.icon?.let {
+        formFilter.icon?.let {
             Icon(
                 imageVector = it,
                 contentDescription = "Share",
@@ -31,6 +31,6 @@ fun BottomSheetItem(filter: Filter, onItemClick: (String) -> Unit) {
             )
         }
         Spacer(modifier = Modifier.width(20.dp))
-        Text(text = filter.name, color = Color.White)
+        Text(text = formFilter.name, color = Color.White)
     }
 }

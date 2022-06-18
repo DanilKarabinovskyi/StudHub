@@ -1,8 +1,5 @@
 package danyil.karabinovskyi.studenthub.common.model
 
-import androidx.annotation.StringRes
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostsResponse
-
 typealias SimpleResource = Resource<Unit>
 
 sealed class Resource<T>(val data: T? = null, val uiText: UiText? = null) {

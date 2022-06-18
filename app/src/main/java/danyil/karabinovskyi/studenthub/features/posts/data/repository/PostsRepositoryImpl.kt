@@ -1,6 +1,5 @@
 package danyil.karabinovskyi.studenthub.features.posts.data.repository
 
-import android.net.Uri
 import androidx.core.net.toFile
 import com.google.gson.Gson
 import danyil.karabinovskyi.studenthub.R
@@ -10,12 +9,12 @@ import danyil.karabinovskyi.studenthub.common.model.UiText
 import danyil.karabinovskyi.studenthub.core.data.Query
 import danyil.karabinovskyi.studenthub.core.domain.model.Comment
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.api.PostsApi
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostsResponse
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.CreatePostRequest
 import danyil.karabinovskyi.studenthub.features.posts.domain.PostsRepository
+import danyil.karabinovskyi.studenthub.features.posts.domain.entity.CreatePostRequest
 import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -24,6 +23,7 @@ class PostsRepositoryImpl @Inject constructor(
     private val api: PostsApi,
     private val gson: Gson
 ) : PostsRepository {
+
     override suspend fun getPosts(query: Query): Resource<List<Post>> {
         return try {
             val response = api.getPosts(
@@ -31,36 +31,18 @@ class PostsRepositoryImpl @Inject constructor(
                 skip = query.skip,
                 order = query.order,
                 sort = query.sort,
-                tags = query.tags,
                 socialTag = query.socialTag
             )
-
-            val posts = mutableListOf<Post>()
-            for (i in 0..20) {
-                posts.add(
-                    Post(
-                        "2",
-                        "2",
-                        "Danyil",
-                        "https://images.unsplash.com/photo-1630518615523-0d82e3985c06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                        "https://images.unsplash.com/photo-1630370939214-4c4041b5efc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                        "loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem",
-                        555,
-                        555,
-                        true,
-                        false
-                    )
-                )
+            if(response.successful) {
+                response.data?.let{
+                    Resource.Success(data = response.data.map { post -> post.mapToUI() })
+                }
+                Resource.Error(uiText = UiText.StringResource(R.string.oops_something_went_wrong))
+            } else {
+                response.message?.let { msg:String ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
             }
-//            todo when api will be ready
-//            if(response.successful) {
-//                Resource.Success(Unit)
-//            } else {
-//                response.message?.let { msg:String ->
-//                    Resource.Error(UiText.DynamicString(msg))
-//                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
-//            }
-            Resource.Success(data = posts)
         } catch (e: IOException) {
             Resource.Error(
                 uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
@@ -73,46 +55,29 @@ class PostsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createPost(
-        description: String,
-        imageUri: Uri
-    ): Resource<Post> {
-        val request = CreatePostRequest(description)
-        val file = imageUri.toFile()
+        request: CreatePostRequest
+    ): Resource<Unit> {
+        // shouldn't be null
+        val file = request.postImage!!.toFile()
         return try {
             val response = api.createPost(
-                postData = MultipartBody.Part
+                title = request.title.toRequestBody(),
+                description = request.description.toRequestBody(),
+                tags = gson.toJson(request.tags).toRequestBody(),
+                file = MultipartBody.Part
                     .createFormData(
-                        "post_data",
-                        gson.toJson(request)
-                    ),
-                postImage = MultipartBody.Part
-                    .createFormData(
-                        name = "post_image",
+                        name = "file",
                         filename = file.name,
                         body = file.asRequestBody()
                     )
             )
-            val post = Post(
-                "2",
-                "2",
-                "Danyil",
-                "https://images.unsplash.com/photo-1630518615523-0d82e3985c06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                "https://images.unsplash.com/photo-1630370939214-4c4041b5efc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                "loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem",
-                555,
-                555,
-                true,
-                false
-            )
-//            todo when api will be ready
-//            if(response.successful) {
-//                Resource.Success(Unit)
-//            } else {
-//                response.message?.let { msg:String ->
-//                    Resource.Error(UiText.DynamicString(msg))
-//                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
-//            }
-            Resource.Success(data = post)
+            if(response.successful) {
+                Resource.Success(Unit)
+            } else {
+                response.message?.let { msg:String ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
+            }
         } catch (e: IOException) {
             Resource.Error(
                 uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
@@ -130,7 +95,7 @@ class PostsRepositoryImpl @Inject constructor(
                 postId = postId.toString()
             )
             val post = Post(
-                "2",
+                2,
                 "2",
                 "Danyil",
                 "https://images.unsplash.com/photo-1630518615523-0d82e3985c06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -162,36 +127,20 @@ class PostsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editPost(
-        description: String,
-        imageUri: Uri
-    ): Resource<Post> {
-        val request = CreatePostRequest(description)
-        val file = imageUri.toFile()
+        request: CreatePostRequest
+    ): Resource<Unit> {
+        val file = request.postImage!!.toFile()
         return try {
             val response = api.editPost(
-                postData = MultipartBody.Part
-                    .createFormData(
-                        "post_data",
-                        gson.toJson(request)
-                    ),
+                title = request.title.toRequestBody(),
+                description = request.description.toRequestBody(),
+                tags = request.tags,
                 postImage = MultipartBody.Part
                     .createFormData(
-                        name = "post_image",
+                        name = "file",
                         filename = file.name,
                         body = file.asRequestBody()
                     )
-            )
-            val post = Post(
-                "2",
-                "2",
-                "Danyil",
-                "https://images.unsplash.com/photo-1630518615523-0d82e3985c06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                "https://images.unsplash.com/photo-1630370939214-4c4041b5efc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                "loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem",
-                555,
-                555,
-                true,
-                false
             )
 //            todo when api will be ready
 //            if(response.successful) {
@@ -201,7 +150,7 @@ class PostsRepositoryImpl @Inject constructor(
 //                    Resource.Error(UiText.DynamicString(msg))
 //                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
 //            }
-            Resource.Success(data = post)
+            Resource.Success(data = Unit)
         } catch (e: IOException) {
             Resource.Error(
                 uiText = UiText.StringResource(R.string.error_couldnt_reach_server)

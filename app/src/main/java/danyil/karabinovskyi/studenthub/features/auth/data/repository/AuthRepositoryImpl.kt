@@ -18,6 +18,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val api: AuthApi,
     private val sharedPreferences: SharedPrefs
 ) : AuthRepository {
+
     override suspend fun register(
     password: RequestBody, email: RequestBody, group: RequestBody,
     file: MultipartBody.Part
