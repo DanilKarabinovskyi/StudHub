@@ -20,7 +20,7 @@ import javax.inject.Singleton
 class AuthModule {
     @Singleton
     @Provides
-    fun provideRegisterApi(client: OkHttpClient) : AuthApi {
+    fun provideAuthApi(client: OkHttpClient) : AuthApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(client)
@@ -31,7 +31,7 @@ class AuthModule {
 
     @Singleton
     @Provides
-    fun provideRegisterRepository(authApi: AuthApi, prefs: SharedPrefs) : AuthRepository {
+    fun provideAuthRepository(authApi: AuthApi, prefs: SharedPrefs) : AuthRepository {
         return AuthRepositoryImpl(authApi, prefs)
     }
 }

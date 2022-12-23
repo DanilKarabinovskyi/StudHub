@@ -90,6 +90,14 @@ private fun NavGraphBuilder.studentHubNavGraph(
         scaffoldState = scaffoldState,
         imageLoader = imageLoader
     )
+    addChatCreateEdit(
+        navController = navController,
+        imageLoader = imageLoader
+    )
+    addChat(
+        navController = navController,
+        imageLoader = imageLoader
+    )
 }
 
 

@@ -19,9 +19,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.core.domain.model.Comment
-import danyil.karabinovskyi.studenthub.ui.theme.ProfilePictureSizeExtraSmall
-import danyil.karabinovskyi.studenthub.ui.theme.SpaceMedium
-import danyil.karabinovskyi.studenthub.ui.theme.SpaceSmall
+import danyil.karabinovskyi.studenthub.ui.theme.*
 
 @ExperimentalCoilApi
 @Composable
@@ -29,7 +27,7 @@ fun Comment(
     modifier: Modifier = Modifier,
     comment: Comment,
     imageLoader: ImageLoader,
-    onLikeClick: (Boolean) -> Unit = {},
+    onLikeClick: () -> Unit = {},
     onLikedByClick: () -> Unit = {}
 ) {
     Card(
@@ -91,15 +89,17 @@ fun Comment(
                     ) {
                         IconButton(
                             onClick = {
-                                onLikeClick(comment.isLiked)
+                                onLikeClick()
                             },
                             modifier = Modifier.weight(1f)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Favorite,
                                 tint = if (comment.isLiked) {
-                                    MaterialTheme.colors.primary
-                                } else MaterialTheme.colors.onBackground,
+                                    Rose9
+                                } else {
+                                    Rose0
+                                },
                                 contentDescription = if (comment.isLiked) {
                                     stringResource(id = R.string.unlike)
                                 } else stringResource(id = R.string.like)

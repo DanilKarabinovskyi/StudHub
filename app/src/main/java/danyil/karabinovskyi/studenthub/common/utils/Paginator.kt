@@ -7,6 +7,8 @@ interface Paginate<T> {
 
     suspend fun loadNextItems()
 
+    suspend fun clear()
+
     class Base<T>(
         private val onLoadUpdated: (Boolean) -> Unit,
         private val onRequest: suspend (nextPage: Int) -> Resource<List<T>>,
@@ -14,7 +16,7 @@ interface Paginate<T> {
         private val onSuccess: (items: List<T>) -> Unit
     ) : Paginate<T> {
 
-        private var page = 0
+        private var page = 1
 
         override suspend fun loadNextItems() {
             onLoadUpdated(true)
@@ -30,6 +32,10 @@ interface Paginate<T> {
                     onLoadUpdated(false)
                 }
             }
+        }
+
+        override suspend fun clear() {
+            page = 1
         }
     }
 }

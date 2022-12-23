@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.common.model.*
 import danyil.karabinovskyi.studenthub.common.utils.SharedPrefs
+import danyil.karabinovskyi.studenthub.core.data.handleErrors
 import danyil.karabinovskyi.studenthub.features.auth.domain.AuthRepository
 import danyil.karabinovskyi.studenthub.features.auth.data.remote.api.AuthApi
 import danyil.karabinovskyi.studenthub.features.auth.data.remote.entity.VerifyResponse
@@ -23,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(
     password: RequestBody, email: RequestBody, group: RequestBody,
     file: MultipartBody.Part
     ): SimpleResource {
-        return try {
+        return handleErrors {
             val response = api.register(password,email, group,
                 file)
             if(response.successful) {
@@ -33,19 +34,11 @@ class AuthRepositoryImpl @Inject constructor(
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
             }
-        } catch(e: IOException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.error_unknown)
-            )
-        } catch(e: HttpException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.error_unknown)
-            )
         }
     }
 
     override suspend fun login(loginRequest: LoginRequest): SimpleResource {
-        return try {
+        return handleErrors {
             val response = api.login(loginRequest)
             if(response.successful) {
                 response.data?.let { authResponse ->
@@ -58,19 +51,11 @@ class AuthRepositoryImpl @Inject constructor(
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
             }
-        } catch(e: IOException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
-            )
-        } catch(e: HttpException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
-            )
         }
     }
 
     override suspend fun authenticate(): Resource<VerifyResponse> {
-        return try {
+        return handleErrors {
             val response = api.authenticate()
             if(response.successful) {
                 if(response.data != null){
@@ -86,14 +71,6 @@ class AuthRepositoryImpl @Inject constructor(
                 } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
             }
 
-        } catch(e: IOException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
-            )
-        } catch(e: HttpException) {
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
-            )
         }
     }
 }

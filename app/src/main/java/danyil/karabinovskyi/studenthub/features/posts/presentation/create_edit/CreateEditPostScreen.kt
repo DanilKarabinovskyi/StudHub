@@ -25,15 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.common.contracts.CropActivityResultContract
 import danyil.karabinovskyi.studenthub.common.model.UiEvent
 import danyil.karabinovskyi.studenthub.common.model.asString
+import danyil.karabinovskyi.studenthub.components.filter_bar.FilterBar
 import danyil.karabinovskyi.studenthub.components.text_fields.TransparentTextField
 import danyil.karabinovskyi.studenthub.components.toolbar.StandardToolbar
 import danyil.karabinovskyi.studenthub.features.posts.presentation.util.PostConstants
-import danyil.karabinovskyi.studenthub.features.posts.presentation.util.PostDescriptionError
+import danyil.karabinovskyi.studenthub.features.posts.presentation.util.PostError
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceLarge
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceMedium
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceSmall
@@ -50,14 +52,14 @@ fun CreateEditPostScreen(
     onNavigateUp: () -> Unit = {},
     onNavigate: (String) -> Unit = {},
     scaffoldState: ScaffoldState,
-    viewModelEdit: CreateEditPostViewModel = hiltViewModel()
+    viewModel: CreateEditPostViewModel = hiltViewModel()
 ) {
-    val imageUri = viewModelEdit.chosenImageUri.value
+    val imageUri = viewModel.chosenImageUri.value
 
     val cropActivityLauncher = rememberLauncherForActivityResult(
         contract = CropActivityResultContract(16f, 9f)
     ) {
-        viewModelEdit.onEvent(CreateEditPostEvent.CropImage(it))
+        viewModel.onEvent(CreateEditPostEvent.CropImage(it))
     }
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -68,7 +70,7 @@ fun CreateEditPostScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        viewModelEdit.eventFlow.collectLatest { event ->
+        viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     GlobalScope.launch {
@@ -93,7 +95,7 @@ fun CreateEditPostScreen(
             showBackArrow = true,
             title = {
                 Text(
-                    text = stringResource(id = R.string.create_a_new_post),
+                    text = stringResource(id = R.string.post),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -124,6 +126,16 @@ fun CreateEditPostScreen(
                     contentDescription = stringResource(id = R.string.choose_image),
                     tint = MaterialTheme.colors.onBackground
                 )
+                viewModel.oldImageUrl.value?.let { url ->
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = url,
+                            imageLoader = imageLoader
+                        ),
+                        contentDescription = stringResource(id = R.string.post_image),
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
                 imageUri?.let { uri ->
                     Image(
                         painter = rememberImagePainter(
@@ -136,20 +148,47 @@ fun CreateEditPostScreen(
                 }
             }
             Spacer(modifier = Modifier.height(SpaceMedium))
+            FilterBar(
+                viewModel.formFilters,
+                showFilterIcon = false,
+                onFilterClick = { filters ->
+                    viewModel.setChosenFilters(filters)
+                })
+            Spacer(modifier = Modifier.height(SpaceMedium))
             TransparentTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = viewModelEdit.descriptionState.value.text,
-                hint = stringResource(id = R.string.enter_a_text),
-                error = when (viewModelEdit.descriptionState.value.error) {
-                    is PostDescriptionError.FieldEmpty -> stringResource(id = R.string.error_field_empty)
+                text = viewModel.titleState.value.text,
+                hint = stringResource(id = R.string.enter_a_title),
+                error = when (viewModel.titleState.value.error) {
+                    is PostError.FieldEmpty -> stringResource(id = R.string.error_field_empty)
                     else -> ""
                 },
-                singleLine = false,
-                maxLines = 5,
+                maxLines = 2,
+                maxLength = PostConstants.MAX_POST_TITLE_LENGTH,
+                onValueChange = {
+                    viewModel.onEvent(
+                        CreateEditPostEvent.EnterTitle(it)
+                    )
+                },
+                textLabel = stringResource(id = R.string.title),
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+
+            )
+            TransparentTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = viewModel.descriptionState.value.text,
+                hint = stringResource(id = R.string.enter_a_text),
+                error = when (viewModel.descriptionState.value.error) {
+                    is PostError.FieldEmpty -> stringResource(id = R.string.error_field_empty)
+                    else -> ""
+                },
+                maxLines = 125,
                 maxLength = PostConstants.MAX_POST_DESCRIPTION_LENGTH,
                 onValueChange = {
-                    viewModelEdit.onEvent(
+                    viewModel.onEvent(
                         CreateEditPostEvent.EnterDescription(it)
                     )
                 },
@@ -161,9 +200,9 @@ fun CreateEditPostScreen(
             Spacer(modifier = Modifier.height(SpaceLarge))
             Button(
                 onClick = {
-                    viewModelEdit.onEvent(CreateEditPostEvent.PostImage)
+                    viewModel.onEvent(CreateEditPostEvent.PostImage)
                 },
-                enabled = !viewModelEdit.isLoading.value,
+                enabled = !viewModel.isLoading.value,
                 modifier = Modifier.align(Alignment.End),
             ) {
                 Text(
@@ -171,7 +210,7 @@ fun CreateEditPostScreen(
                     color = MaterialTheme.colors.onPrimary
                 )
                 Spacer(modifier = Modifier.width(SpaceSmall))
-                if (viewModelEdit.isLoading.value) {
+                if (viewModel.isLoading.value) {
                     CircularProgressIndicator(
                         color = MaterialTheme.colors.onPrimary,
                         modifier = Modifier

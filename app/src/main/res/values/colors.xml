@@ -7,4 +7,51 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Default colors -->
+    <color name="text_high_emphasis">#000000</color>
+    <color name="text_low_emphasis">#72767E</color>
+    <color name="disabled">#B4B7BB</color>
+    <color name="borders">#DBDDE1</color>
+    <color name="input_background">#E9EAED</color>
+    <color name="app_background">#F7F7F8</color>
+    <color name="bars_background">#FFFFFF</color>
+    <color name="link_background">#E9F1FF</color>
+    <color name="overlay_regular">#80000000</color>
+    <color name="overlay_dark">#99000000</color>
+    <color name="primary_accent">#005FFF</color>
+    <color name="error_accent">#FF3742</color>
+    <color name="info_accent">#20E070</color>
+    <color name="highlight">#FBF4DD</color>
+
+    <!-- Default Dark colors -->
+    <color name="text_high_emphasis_dark">#FFFFFF</color>
+    <color name="text_low_emphasis_dark">#72767E</color>
+    <color name="disabled_dark">#4C525C</color>
+    <color name="borders_dark">#272A30</color>
+    <color name="input_background_dark">#1C1E22</color>
+    <color name="app_background_dark">#000000</color>
+    <color name="bars_background_dark">#121416</color>
+    <color name="link_background_dark">#00193D</color>
+    <color name="overlay_regular_dark">#33000000</color>
+    <color name="overlay_dark_dark">#99FFFFFF</color>
+    <color name="primary_accent_dark">#337EFF</color>
+    <color name="error_accent_dark">#FF3742</color>
+    <color name="info_accent_dark">#20E070</color>
+    <color name="highlight_dark">#302D22</color>
+
+    <!-- Avatar gradient colors -->
+    <color name="avatar_gradient_orange">#FF8A65</color>
+    <color name="avatar_gradient_green">#81C784</color>
+    <color name="avatar_gradient_blue">#4FC3F7</color>
+    <color name="avatar_gradient_brown">#A1887F</color>
+    <color name="avatar_gradient_yellow">#FFF176</color>
+    <color name="avatar_gradient_red">#E57373</color>
+    <array name="avatar_gradient_colors">
+        <item>@color/avatar_gradient_orange</item>
+        <item>@color/avatar_gradient_green</item>
+        <item>@color/avatar_gradient_blue</item>
+        <item>@color/avatar_gradient_brown</item>
+        <item>@color/avatar_gradient_yellow</item>
+        <item>@color/avatar_gradient_red</item>
+    </array>
 </resources>

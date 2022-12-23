@@ -1,6 +1,10 @@
 package danyil.karabinovskyi.studenthub.ui.theme
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import danyil.karabinovskyi.studenthub.R
 
 val Shadow11 = Color(0xff001787)
 val Shadow10 = Color(0xff00119e)
@@ -103,3 +107,85 @@ val HintGray = Color(0xFF6D6D6D)
 val TextGray = Color(0xFFA6A6A6)
 val GreenAccent = Color(0xFF08FF04)
 val DarkerGreen = Color(0xFF029600)
+
+@Immutable
+data class Colors(
+    val textHighEmphasis: Color,
+    val textLowEmphasis: Color,
+    val disabled: Color,
+    val borders: Color,
+    val inputBackground: Color,
+    val appBackground: Color,
+    val onBackground: Color,
+    val barsBackground: Color,
+    val linkBackground: Color,
+    val overlay: Color,
+    val overlayDark: Color,
+    val primaryAccent: Color,
+    val errorAccent: Color,
+    val infoAccent: Color,
+    val highlight: Color,
+    val ownMessagesBackground: Color,
+    val otherMessagesBackground: Color,
+    val deletedMessagesBackground: Color,
+    val giphyMessageBackground: Color,
+    val threadSeparatorGradientStart: Color,
+    val threadSeparatorGradientEnd: Color,
+    val primary: Color,
+) {
+
+    companion object {
+
+        @Composable
+        fun defaultColors(): Colors = Colors(
+            textHighEmphasis = colorResource(R.color.text_high_emphasis),
+            textLowEmphasis = colorResource(R.color.text_low_emphasis),
+            disabled = colorResource(R.color.disabled),
+            borders = colorResource(R.color.borders),
+            inputBackground = colorResource(R.color.input_background),
+            appBackground = colorResource(R.color.app_background),
+            onBackground = Color(0xFF2D3132),
+            barsBackground = colorResource(R.color.bars_background),
+            linkBackground = colorResource(R.color.link_background),
+            overlay = colorResource(R.color.overlay_regular),
+            overlayDark = colorResource(R.color.overlay_dark),
+            primaryAccent = colorResource(R.color.primary_accent),
+            errorAccent = colorResource(R.color.error_accent),
+            infoAccent = colorResource(R.color.info_accent),
+            highlight = colorResource(R.color.highlight),
+            ownMessagesBackground = Ocean8,
+            otherMessagesBackground = colorResource(R.color.borders),
+            deletedMessagesBackground = colorResource(R.color.input_background),
+            giphyMessageBackground = colorResource(R.color.bars_background),
+            threadSeparatorGradientStart = colorResource(R.color.input_background),
+            threadSeparatorGradientEnd = colorResource(R.color.app_background),
+            primary = Ocean8,
+        )
+
+        @Composable
+        fun defaultDarkColors(): Colors = Colors(
+            textHighEmphasis = colorResource(R.color.text_high_emphasis_dark),
+            textLowEmphasis = colorResource(R.color.text_low_emphasis_dark),
+            disabled = colorResource(R.color.disabled_dark),
+            borders = colorResource(R.color.borders_dark),
+            inputBackground = colorResource(R.color.input_background_dark),
+            appBackground = colorResource(R.color.app_background_dark),
+            onBackground = Color(0xFFE0E3E3),
+            barsBackground = colorResource(R.color.bars_background_dark),
+            linkBackground = colorResource(R.color.link_background_dark),
+            overlay = colorResource(R.color.overlay_regular_dark),
+            overlayDark = colorResource(R.color.overlay_dark_dark),
+            primaryAccent = colorResource(R.color.primary_accent_dark),
+            errorAccent = colorResource(R.color.error_accent_dark),
+            infoAccent = colorResource(R.color.info_accent_dark),
+            highlight = colorResource(R.color.highlight_dark),
+            ownMessagesBackground = Ocean10,
+            otherMessagesBackground = colorResource(R.color.borders_dark),
+            deletedMessagesBackground = colorResource(R.color.input_background_dark),
+            giphyMessageBackground = colorResource(R.color.bars_background_dark),
+            threadSeparatorGradientStart = colorResource(R.color.input_background_dark),
+            threadSeparatorGradientEnd = colorResource(R.color.app_background_dark),
+            primary = Ocean10,
+        )
+    }
+}

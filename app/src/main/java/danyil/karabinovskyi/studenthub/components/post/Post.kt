@@ -45,6 +45,7 @@ fun Post(
     imageLoader: ImageLoader,
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
+    canDelete: Boolean = false,
     onPostClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
@@ -84,7 +85,7 @@ fun Post(
                     .padding(SpaceMedium)
             ) {
                 ActionRow(
-                    username = post.username,
+                    title = post.title,
                     modifier = Modifier.fillMaxWidth(),
                     isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
@@ -122,7 +123,7 @@ fun Post(
                     Text(
                         text = stringResource(
                             id = danyil.karabinovskyi.studenthub.R.string.x_likes,
-                            post.likeCount
+                            post.likesCount
                         ),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
@@ -131,7 +132,7 @@ fun Post(
                     Text(
                         text = stringResource(
                             id = danyil.karabinovskyi.studenthub.R.string.x_comments,
-                            post.commentCount
+                            post.commentsCount
                         ),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
@@ -162,6 +163,7 @@ fun EngagementButtons(
     modifier: Modifier = Modifier,
     isLiked: Boolean = false,
     iconSize: Dp = 30.dp,
+    canDelete: Boolean = false,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
@@ -221,15 +223,17 @@ fun EngagementButtons(
             )
         }
         Spacer(modifier = Modifier.width(SpaceMedium))
-        IconButton(
-            onClick = onDeleteClick,
-            modifier = Modifier.size(iconSize)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = stringResource(id =
+        if (canDelete){
+            IconButton(
+                onClick = onDeleteClick,
+                modifier = Modifier.size(iconSize)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(id =
                     danyil.karabinovskyi.studenthub.R.string.delete_post)
-            )
+                )
+            }
         }
     }
 }
@@ -238,10 +242,11 @@ fun EngagementButtons(
 fun ActionRow(
     modifier: Modifier = Modifier,
     isLiked: Boolean = false,
+    title: String,
+    canDelete: Boolean = false,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
-    username: String,
     onUsernameClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {}
 ) {
@@ -251,22 +256,26 @@ fun ActionRow(
         modifier = modifier,
     ) {
         Text(
-            text = username,
+            text = title,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.primary
+                color = StudentHubTheme.colors.textPrimary,
+                fontSize = 20.sp
             ),
             modifier = Modifier
                 .clickable {
                     onUsernameClick()
-                }.padding(SpaceSmall)
+                }.padding(top = SpaceSmall, bottom = SpaceSmall)
         )
         EngagementButtons(
             isLiked = isLiked,
             onLikeClick = onLikeClick,
             onCommentClick = onCommentClick,
             onShareClick = onShareClick,
-            onDeleteClick = onDeleteClick
+            onDeleteClick = onDeleteClick,
+            canDelete = canDelete,
         )
     }
 }

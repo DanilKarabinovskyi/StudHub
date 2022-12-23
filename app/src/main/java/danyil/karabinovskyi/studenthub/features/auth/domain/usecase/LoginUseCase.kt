@@ -21,5 +21,4 @@ class LoginUseCase @Inject constructor(private val repository: AuthRepository) {
             result = repository.login(loginRequest)
         )
     }
-
 }

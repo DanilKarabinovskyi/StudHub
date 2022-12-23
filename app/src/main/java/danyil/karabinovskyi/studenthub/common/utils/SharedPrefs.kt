@@ -2,12 +2,15 @@ package danyil.karabinovskyi.studenthub.common.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import danyil.karabinovskyi.studenthub.core.data.entity.User
 
 @Suppress("UNCHECKED_CAST")
 class SharedPrefs (private val context: Context) {
     companion object {
         private const val PREF = "StudentHubPrefName"
-        private const val PREF_TOKEN = "user_token"
+        private const val PREF_TOKEN = "user_token_v5"
+        private const val USER = "user"
     }
 
     private val sharedPref: SharedPreferences = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
@@ -19,6 +22,15 @@ class SharedPrefs (private val context: Context) {
 
     fun getToken() : String {
         return get(PREF_TOKEN, String::class.java)
+    }
+
+    fun saveUser(user: User){
+        put(USER, Gson().toJson(user))
+    }
+
+    fun getUser() : User? {
+        val user = get(USER, String::class.java)
+        return Gson().fromJson(user, User::class.java)
     }
 
     private fun <T> get(key: String, clazz: Class<T>): T =

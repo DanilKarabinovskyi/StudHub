@@ -3,11 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/layout/app_scan_activity_layout.xml" value="0.33" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/ic_gallery.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/ic_reaction_wut_selected.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/ic_send.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/message_sent.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/preview_avatar.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_empty_channels.xml" value="0.238" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_empty_search_results.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_circle_left.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_clear.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_close.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_image_picker.xml" value="0.238" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_person.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_person_remove.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reaction_lol.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reaction_lol_selected.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reaction_love.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reaction_thumbs_down_selected.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reaction_thumbs_up_selected.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_reply.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/drawable/stream_compose_ic_visible_to_you.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/StudentHub/app/src/main/res/layout/app_scan_activity_layout.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

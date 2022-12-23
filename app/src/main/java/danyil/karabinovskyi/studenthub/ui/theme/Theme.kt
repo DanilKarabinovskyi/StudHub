@@ -1,18 +1,19 @@
 package danyil.karabinovskyi.studenthub.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import danyil.karabinovskyi.studenthub.common.utils.DateFormatter
+
 
 private val LightColorPalette = StudentHubColors(
     brand = Shadow5,
     brandSecondary = Ocean3,
-    uiBackground = Neutral0,
+    uiBackground = Neutral5,
     uiBorder = Neutral4,
     uiFloated = FunctionalGrey,
     textSecondary = Neutral7,
@@ -242,67 +243,72 @@ class StudentHubColors(
     )
 }
 
-@Composable
-fun ProvideStudentHubColors(
-    colors: StudentHubColors,
-    content: @Composable () -> Unit
-) {
-    val colorPalette = remember {
-        colors.copy()
-    }
-    colorPalette.update(colors)
-    CompositionLocalProvider(LocalStudentHubColors provides colorPalette, content = content)
-}
-
-private val LocalStudentHubColors = staticCompositionLocalOf<StudentHubColors> {
+private val LocalStudentHubColors = compositionLocalOf<StudentHubColors> {
     error("No StudentHubColorPalette provided")
+}
+private val LocalStudentHubColorsV2 = compositionLocalOf<danyil.karabinovskyi.studenthub.ui.theme.Colors> {
+    error("No StudentHubColorPalette provided")
+}
+private val LocalTypography = compositionLocalOf<Typography> {
+    error("No typography provided!")
+}
+private val LocalShapes = compositionLocalOf<Shapes> {
+    error("No shapes provided!")
+}
+private val LocalDateFormatter = compositionLocalOf<DateFormatter> {
+    error("No DateFormatter provided!")
 }
 
 @Composable
 fun StudentHubTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    dateFormatter: DateFormatter = DateFormatter.from(LocalContext.current),
+    typography: Typography = Typography.defaultTypography(),
+    shapes: Shapes = Shapes.defaultShapes(),
+    colors: StudentHubColors = if (isDarkTheme) DarkColorPalette else LightColorPalette,
+    colorsV2: Colors = if (isDarkTheme) Colors.defaultDarkColors() else Colors.defaultColors(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
-
     val sysUiController = rememberSystemUiController()
     SideEffect {
         sysUiController.setSystemBarsColor(
             color = colors.uiBackground.copy(alpha = AlphaNearOpaque)
         )
     }
-    val materialColors = if (darkTheme) DarkColorPaletteMaterial else LightColorPaletteMaterial
-    ProvideStudentHubColors(colors) {
-        MaterialTheme(
-            colors = materialColors,
-            typography = Typography,
-            shapes = Shapes,
-            content = content
-        )
+    CompositionLocalProvider(
+        LocalDateFormatter provides dateFormatter,
+        LocalTypography provides typography,
+        LocalShapes provides shapes,
+        LocalStudentHubColors provides colors,
+        LocalStudentHubColorsV2 provides colorsV2
+    ){
+        content()
     }
 }
 
 object StudentHubTheme {
     val colors: StudentHubColors
         @Composable
+        @ReadOnlyComposable
         get() = LocalStudentHubColors.current
-}
 
-fun debugColors(
-    darkTheme: Boolean,
-    debugColor: Color = Color.Magenta
-) = Colors(
-    primary = debugColor,
-    primaryVariant = debugColor,
-    secondary = debugColor,
-    secondaryVariant = debugColor,
-    background = debugColor,
-    surface = debugColor,
-    error = debugColor,
-    onPrimary = debugColor,
-    onSecondary = debugColor,
-    onBackground = debugColor,
-    onSurface = debugColor,
-    onError = debugColor,
-    isLight = !darkTheme
-)
+    val colorsV2: danyil.karabinovskyi.studenthub.ui.theme.Colors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalStudentHubColorsV2.current
+
+    val dateFormatter: DateFormatter
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalDateFormatter.current
+
+    val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
+
+    val shapes: Shapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShapes.current
+}

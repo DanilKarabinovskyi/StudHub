@@ -1,4 +1,4 @@
-package danyil.karabinovskyi.studenthub.features.auth.presentation.login
+ package danyil.karabinovskyi.studenthub.features.auth.presentation.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

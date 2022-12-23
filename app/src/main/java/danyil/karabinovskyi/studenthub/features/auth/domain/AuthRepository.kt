@@ -12,7 +12,6 @@ interface AuthRepository {
     suspend fun register(password:RequestBody,email:RequestBody, group: RequestBody,
         file: MultipartBody.Part) : SimpleResource
 
-
     suspend fun login(
         loginRequest: LoginRequest
     ): SimpleResource

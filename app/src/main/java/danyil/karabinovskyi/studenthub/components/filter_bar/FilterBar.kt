@@ -35,15 +35,15 @@ import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 fun FilterBar(
     formFilters: List<FormFilter>,
     showFilterIcon: Boolean = false,
-    onShowFilters: () -> Unit,
-    onFilterClick: (String) -> Unit
+    onShowFilters: () -> Unit = {},
+    onFilterClick: (List<String>) -> Unit
 ) {
-
+    val filters = HashSet<String>()
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(start = 12.dp, end = 8.dp),
-        modifier = Modifier.heightIn(min = 38.dp)
+        contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 4.dp),
+        modifier = Modifier.height(38.dp)
     ) {
         if (showFilterIcon){
             item {
@@ -55,13 +55,15 @@ fun FilterBar(
                         modifier = Modifier.diagonalGradientBorder(
                             colors = StudentHubTheme.colors.interactiveSecondary,
                             shape = CircleShape,
-                        )
+                        ).padding(0.dp),
                     )
                 }
             }
         }
         items(formFilters) { filter ->
-            FilterChip(formFilter = filter, shape = MaterialTheme.shapes.small, onFilterClick = {onFilterClick(filter.name)})
+            FilterChip(formFilter = filter, shape = MaterialTheme.shapes.small, onFilterClick = {
+                onFilterClick(formFilters.filter {it.enabled.value }.map { filter -> filter.name })
+            })
         }
     }
 }
@@ -111,8 +113,8 @@ fun FilterChip(
                 .toggleable(
                     value = selected,
                     onValueChange = {
-                        onFilterClick(formFilter.name)
                         setSelected(it)
+                        onFilterClick(formFilter.name)
                     },
                     interactionSource = interactionSource,
                     indication = null,

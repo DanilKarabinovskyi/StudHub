@@ -12,6 +12,8 @@ import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.features.auth.presentation.login.LoginScreen
 import danyil.karabinovskyi.studenthub.features.auth.presentation.registration.RegistrationScreen
 import danyil.karabinovskyi.studenthub.features.auth.presentation.splash.SplashScreen
+import danyil.karabinovskyi.studenthub.features.chat.presentation.chat.ChatScreen
+import danyil.karabinovskyi.studenthub.features.chat.presentation.create.CreateChatScreen
 import danyil.karabinovskyi.studenthub.features.posts.presentation.create_edit.CreateEditPostScreen
 import danyil.karabinovskyi.studenthub.features.posts.presentation.detail.PostDetailScreen
 
@@ -94,7 +96,7 @@ fun NavGraphBuilder.addPostsDetail(
             navArgument(
                 name = "postId"
             ) {
-                type = NavType.StringType
+                type = NavType.IntType
             },
             navArgument(
                 name = "shouldShowKeyboard"
@@ -116,7 +118,7 @@ fun NavGraphBuilder.addPostsDetail(
             onNavigateUp = navController::navigateUp,
             onNavigate = navController::navigate,
             shouldShowKeyboard = shouldShowKeyboard,
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
         )
     }
 }
@@ -133,7 +135,7 @@ fun NavGraphBuilder.addPostsCreateEdit(
             navArgument(
                 name = "postId"
             ) {
-                type = NavType.StringType
+                type = NavType.IntType
             },
         ),
     ) {
@@ -142,6 +144,53 @@ fun NavGraphBuilder.addPostsCreateEdit(
             onNavigateUp = navController::navigateUp,
             onNavigate = navController::navigate,
             imageLoader = imageLoader
+        )
+    }
+}
+
+fun NavGraphBuilder.addChatCreateEdit(
+    navController: NavHostController,
+    imageLoader: ImageLoader
+) {
+    composable(
+        route = MainDestinations.CHAT_CREATE_EDIT + "/{chatId}",
+        arguments = listOf(
+            navArgument(
+                name = "chatId"
+            ) {
+                type = NavType.IntType
+            },
+        ),
+    ) {
+        CreateChatScreen(
+            onNavigateUp = navController::navigateUp,
+            imageLoader = imageLoader
+        )
+    }
+}
+
+fun NavGraphBuilder.addChat(
+    navController: NavHostController,
+    imageLoader: ImageLoader
+) {
+    composable(
+        route = MainDestinations.CHAT_ROUTE + "/{chatIdToOpen}?chatName={chatName}",
+        arguments = listOf(
+            navArgument(
+                name = "chatIdToOpen"
+            ) {
+                type = NavType.IntType
+            },
+            navArgument(
+                name = "chatName"
+            ) {
+                type = NavType.StringType
+            }
+        ),
+    ) {
+        ChatScreen(
+            onNavigate = navController::navigate,
+            onNavigateUp = navController::navigateUp,
         )
     }
 }

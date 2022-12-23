@@ -14,9 +14,8 @@ import danyil.karabinovskyi.studenthub.features.auth.domain.AuthRepository
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.api.PostsApi
 import danyil.karabinovskyi.studenthub.features.posts.data.repository.PostsRepositoryImpl
 import danyil.karabinovskyi.studenthub.features.posts.domain.PostsRepository
-import danyil.karabinovskyi.studenthub.features.posts.domain.use_case.CreatePostUseCase
-import danyil.karabinovskyi.studenthub.features.posts.domain.use_case.GetPostsUseCase
-import danyil.karabinovskyi.studenthub.features.posts.domain.use_case.PostUseCases
+import danyil.karabinovskyi.studenthub.features.posts.domain.use_case.*
+import danyil.karabinovskyi.studenthub.features.posts.presentation.util.LikePost
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,10 +46,21 @@ class PostsModule {
 
     @Provides
     @Singleton
+    fun provideLikePostExecutor(): LikePost {
+        return LikePost.Base()
+    }
+
+    @Provides
+    @Singleton
     fun providePostUseCases(repository: PostsRepository): PostUseCases {
         return PostUseCases(
             createPostUseCase = CreatePostUseCase(repository),
             getPostsUseCase = GetPostsUseCase(repository),
+            getPostUseCase = GetPostUseCase(repository),
+            createCommentUseCase = CreateCommentUseCase(repository),
+            getCommentsForPostUseCase = GetCommentsForPostUseCase(repository),
+            deletePostUseCase = DeletePostUseCase(repository),
+            likeToggleUseCase = LikeToggleUseCase(repository),
         )
     }
 }

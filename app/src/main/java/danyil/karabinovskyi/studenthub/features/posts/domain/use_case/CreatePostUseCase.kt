@@ -6,7 +6,6 @@ import danyil.karabinovskyi.studenthub.common.model.SimpleResource
 import danyil.karabinovskyi.studenthub.common.model.UiText
 import danyil.karabinovskyi.studenthub.features.posts.domain.PostsRepository
 import danyil.karabinovskyi.studenthub.features.posts.domain.entity.CreatePostRequest
-import javax.inject.Inject
 
 class CreatePostUseCase (
     private val repository: PostsRepository
@@ -14,16 +13,11 @@ class CreatePostUseCase (
     suspend fun execute(
         createPostRequest: CreatePostRequest
     ): SimpleResource {
-        if (createPostRequest.postImage == null) {
+        if (createPostRequest.description.isBlank() || createPostRequest.title.isBlank() || createPostRequest.tags.isEmpty()) {
             return Resource.Error(
-                uiText = UiText.StringResource(R.string.error_no_image_picked)
+                uiText = UiText.StringResource(R.string.error_fields_blank)
             )
         }
-        if (createPostRequest.description.isBlank()) {
-            return Resource.Error(
-                uiText = UiText.StringResource(R.string.error_description_blank)
-            )
-        }
-        return repository.createPost(createPostRequest)
+        return repository.upsertPost(createPostRequest)
     }
 }

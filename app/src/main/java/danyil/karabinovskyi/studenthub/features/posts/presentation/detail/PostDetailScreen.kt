@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import danyil.karabinovskyi.studenthub.common.extensions.observeLifecycle
 import danyil.karabinovskyi.studenthub.common.extensions.sendSharePostIntent
 import danyil.karabinovskyi.studenthub.common.model.UiEvent
 import danyil.karabinovskyi.studenthub.common.model.asString
@@ -36,6 +37,7 @@ import danyil.karabinovskyi.studenthub.components.comment.Comment
 import danyil.karabinovskyi.studenthub.components.post.ActionRow
 import danyil.karabinovskyi.studenthub.components.text_fields.SendTextField
 import danyil.karabinovskyi.studenthub.components.toolbar.StandardToolbar
+import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 
@@ -47,15 +49,16 @@ fun PostDetailScreen(
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
     viewModel: PostDetailViewModel = hiltViewModel(),
-    shouldShowKeyboard: Boolean = false
+    shouldShowKeyboard: Boolean = false,
 ) {
     val state = viewModel.state.value
+//    val state by viewModel.loadPostDetails().collectAsState()
     val commentTextFieldState = viewModel.commentTextFieldState.value
 
     val focusRequester = remember {
         FocusRequester()
     }
-
+    viewModel.observeLifecycle(LocalLifecycleOwner.current.lifecycle)
     val context = LocalContext.current
     LaunchedEffect(key1 = true) {
         if (shouldShowKeyboard) {
@@ -68,6 +71,9 @@ fun PostDetailScreen(
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
                     )
+                }
+                is UiEvent.NavigateUp -> {
+                    onNavigateUp.invoke()
                 }
                 else -> {}
             }
@@ -89,6 +95,17 @@ fun PostDetailScreen(
             },
             modifier = Modifier.fillMaxWidth(),
             showBackArrow = true,
+            navActions = {
+                IconButton(onClick = {
+                    onNavigate(MainDestinations.POSTS_CREATE_EDIT + "/${viewModel.state.value.postId}")
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "",
+                        tint = MaterialTheme.colors.onBackground,
+                    )
+                }
+            }
         )
         LazyColumn(
             modifier = Modifier
@@ -132,8 +149,11 @@ fun PostDetailScreen(
                                         .padding(SpaceLarge)
                                 ) {
                                     ActionRow(
-                                        username = state.post.username,
+                                        title = state.post.title,
                                         modifier = Modifier.fillMaxWidth(),
+                                        onDeleteClick = {
+                                            viewModel.onEvent(PostDetailEvent.DeletePost)
+                                        },
                                         onLikeClick = {
                                             viewModel.onEvent(PostDetailEvent.LikePost)
                                         },
@@ -147,7 +167,8 @@ fun PostDetailScreen(
                                         onUsernameClick = {
 //                                            onNavigate(Screen.ProfileScreen.route + "?userId=${post.userId}")
                                         },
-                                        isLiked = state.post.isLiked
+                                        isLiked = state.post.isLiked,
+                                        canDelete = state.post.isOwnPost
                                     )
                                     Spacer(modifier = androidx.compose.ui.Modifier.height(SpaceSmall))
                                     Text(
@@ -158,7 +179,7 @@ fun PostDetailScreen(
                                     Text(
                                         text = stringResource(
                                             id = danyil.karabinovskyi.studenthub.R.string.x_likes,
-                                            post.likeCount
+                                            post.likesCount
                                         ),
                                         fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.body2,
@@ -175,7 +196,7 @@ fun PostDetailScreen(
                                 imageLoader = imageLoader
                             ),
                             contentDescription = "Profile picture",
-                            modifier = androidx.compose.ui.Modifier
+                            modifier = Modifier
                                 .size(ProfilePictureSizeMedium)
                                 .clip(CircleShape)
                                 .align(Alignment.TopCenter)

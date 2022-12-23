@@ -2,7 +2,6 @@ package danyil.karabinovskyi.studenthub.core.di
 
 import android.app.Application
 import coil.ImageLoader
-import coil.decode.SvgDecoder
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -19,9 +18,6 @@ object AppModule {
     fun provideImageLoader(app: Application): ImageLoader {
         return ImageLoader.Builder(app)
             .crossfade(true)
-            .componentRegistry {
-                add(SvgDecoder(app))
-            }
             .build()
     }
 

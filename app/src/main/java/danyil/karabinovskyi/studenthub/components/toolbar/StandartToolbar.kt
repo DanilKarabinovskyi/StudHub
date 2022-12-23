@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import danyil.karabinovskyi.studenthub.R
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
 fun StandardToolbar(
@@ -32,13 +33,13 @@ fun StandardToolbar(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(id = R.string.back),
-                        tint = MaterialTheme.colors.onBackground
+                        tint = StudentHubTheme.colors.iconPrimary
                     )
                 }
             }
         } else null,
         actions = navActions,
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = StudentHubTheme.colors.uiFloated,
         elevation = 0.dp
     )
 }

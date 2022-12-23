@@ -1,14 +1,14 @@
 package danyil.karabinovskyi.studenthub.features.posts.presentation
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,14 +36,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun PostsScreen(
     imageLoader: ImageLoader,
-    scaffoldState: ScaffoldState,
     onNavigate: (String) -> Unit = {},
-    onNavigateUp: () -> Unit = {},
     viewModel: PostsViewModel = hiltViewModel()
 ) {
     val pagingState = viewModel.pagingState.value
-    val createEditPostId by mutableStateOf<String>("000")
-    val filters  = viewModel.formFilters
+    val filters = viewModel.formFilters
     val context = LocalContext.current
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -52,11 +49,7 @@ fun PostsScreen(
     ModalBottomSheetLayout(
         sheetContent = {
             BottomSheet(sortFilters, bottomSheetState, onItemClick = { filterName ->
-                Toast.makeText(
-                    context,
-                    filterName,
-                    Toast.LENGTH_SHORT
-                ).show()
+                viewModel.loadNextPosts(true, socialTag = filterName)
             })
         },
         sheetState = bottomSheetState,
@@ -73,19 +66,19 @@ fun PostsScreen(
                     Text(
                         text = stringResource(id = R.string.posts),
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colors.onBackground
+                        color = StudentHubTheme.colors.textPrimary
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 showBackArrow = false,
                 navActions = {
                     IconButton(onClick = {
-                        onNavigate(MainDestinations.POSTS_CREATE_EDIT + "/${createEditPostId}")
+                        onNavigate(MainDestinations.POSTS_CREATE_EDIT + "/${-777}")
                     }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "",
-                            tint = MaterialTheme.colors.onBackground,
+                            tint = StudentHubTheme.colors.iconPrimary,
                         )
                     }
                 }
@@ -94,62 +87,15 @@ fun PostsScreen(
                 filters,
                 showFilterIcon = true,
                 onShowFilters = { scope.launch { bottomSheetState.show() } },
-                onFilterClick = { string ->
-                    val a = string
+                onFilterClick = { filters ->
+                    viewModel.loadNextPosts(true,filters)
                 })
-//            Box(modifier = Modifier.fillMaxSize()) {
-//                LazyColumn {
-//                    items(20) { i ->
-////                    if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
-////                        viewModel.loadNextPosts()
-////                    }
-//                        Post(
-//                            post = post,
-//                            imageLoader = ImageLoader.Builder(LocalContext.current)
-//                                .crossfade(true)
-//                                .componentRegistry {
-//                                    add(SvgDecoder(LocalContext.current))
-//                                }
-//                                .build(),
-//                            onUsernameClick = {
-////                            onNavigate(Screen.ProfileScreen.route + "?userId=${post.userId}")
-//                            },
-//                            onPostClick = {
-//                                onNavigate(MainDestinations.POSTS_DETAIL + "/${post.id}")
-//                            },
-//                            onCommentClick = {
-////                            onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
-//                            },
-//                            onLikeClick = {
-////                            viewModel.onEvent(MainFeedEvent.LikedPost(post.id))
-//                            },
-//                            onShareClick = {
-////                            context.sendSharePostIntent(post.id)
-//                            },
-//                            onDeleteClick = {
-////                            viewModel.onEvent(MainFeedEvent.DeletePost(post))
-//                            }
-//                        )
-////                    if (i < pagingState.items.size - 1) {
-////                        Spacer(modifier = Modifier.height(SpaceLarge))
-////                    }
-//                    }
-//                    item {
-//                        Spacer(modifier = Modifier.height(90.dp))
-//                    }
-//                }
-////            if (pagingState.isLoading) {
-////                CircularProgressIndicator(
-////                    modifier = Modifier.align(Alignment.Center)
-////                )
-////            }
-//            }
             Box(modifier = Modifier.fillMaxSize()) {
                 LazyColumn {
                     items(pagingState.items.size) { i ->
                         val post = pagingState.items[i]
                         if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
-                            viewModel.loadNextPosts()
+                            viewModel.loadNextPosts(false)
                         }
                         Post(
                             post = post,
@@ -164,7 +110,7 @@ fun PostsScreen(
                                 onNavigate(MainDestinations.POSTS_DETAIL + "/${post.id}?shouldShowKeyboard=true")
                             },
                             onLikeClick = {
-                                viewModel.onEvent(PostsEvents.LikedPost(post.id))
+                                viewModel.onEvent(PostsEvents.LikedPost(post))
                             },
                             onShareClick = {
                                 context.sendSharePostIntent(post.id)
@@ -189,6 +135,4 @@ fun PostsScreen(
             }
         }
     }
-
-
 }

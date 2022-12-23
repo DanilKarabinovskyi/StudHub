@@ -1,11 +1,25 @@
 package danyil.karabinovskyi.studenthub.core.data.entity
 
-import okhttp3.MultipartBody
-import retrofit2.http.Part
+import android.os.Parcelable
+import danyil.karabinovskyi.studenthub.features.chat.data.remote.entity.DataHolder
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class User(
-    @Part("password") val password: String = "",
-    @Part("group") val group: String = "",
-    @Part("email") val email: String = "",
-    @Part("ticketImage") val photo: MultipartBody.Part? = null,
-    )
+    val id: Int = 0,
+    val ticket: String = "",
+    val groupId: Int = 0,
+    val email: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+    val imageUrl: String = "",
+    val updatedAt: String = "",
+    val createdAt: String = "",
+    val group: DataHolder? = null,
+    val faculty: DataHolder? = null,
+    val university: DataHolder? = null,
+) : Parcelable {
+    fun fullName(): String {
+        return "$firstName $lastName"
+    }
+}

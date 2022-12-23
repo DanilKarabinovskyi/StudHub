@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "182048361598",
+    "project_id": "students-hub-82414",
+    "storage_bucket": "students-hub-82414.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182048361598:android:931c6063cf2ebd411f5c2f",
+        "android_client_info": {
+          "package_name": "danyil.karabinovskyi.studenthub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182048361598-vj002q93bav2mfa6c0edcmjvvafkcusi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWRCs81n1_-3y_ItOgYsHHPremfH0nt0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182048361598-vj002q93bav2mfa6c0edcmjvvafkcusi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

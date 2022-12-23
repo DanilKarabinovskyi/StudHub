@@ -6,24 +6,31 @@ data class PostResponse(
     val image: String,
     val text: String,
     val createdAt: String,
+    val profilePictureUrl:String,
+    val username: String,
+    val likesCount: Int,
+    val commentsCount: Int,
     val id: Int,
     val authorId: Int,
     val tags: List<String>,
-    val title: String
-
+    val title: String,
+    val isLiked: Boolean = false,
+    val isOwnPost:Boolean = false
 ) {
     fun mapToUI() : Post {
         return Post(
             id = id,
-            userId = text,
-            username = text,
-            imageUrl = text,
-            profilePictureUrl = text,
+            authorId = authorId,
+            username = username,
+            imageUrl = image,
+            title = title,
+            profilePictureUrl = profilePictureUrl,
             description = text,
-            likeCount = id,
-            commentCount = id,
-            isLiked = false,
-            isOwnPost = false
+            likesCount = likesCount,
+            commentsCount = commentsCount,
+            isLiked = isLiked,
+            isOwnPost = isOwnPost,
+            tags = tags
         )
     }
 }

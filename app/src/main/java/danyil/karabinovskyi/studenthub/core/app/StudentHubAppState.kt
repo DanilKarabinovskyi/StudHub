@@ -27,6 +27,8 @@ object MainDestinations {
     const val LOGIN_ROUTE = "login"
     const val HOME_ROUTE = "home"
     const val CHAT_ROUTE = "chat"
+    const val CHATS_ROUTE = "chats"
+    const val CHAT_CREATE_EDIT = "chats_create_edit"
     const val POSTS_ROUTE = "posts"
     const val EVENTS_ROUTE = "events"
     const val POSTS_DETAIL = "posts_detail"

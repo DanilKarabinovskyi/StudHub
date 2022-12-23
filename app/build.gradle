@@ -4,15 +4,17 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "danyil.karabinovskyi.studenthub"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
+        compileSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -85,6 +87,10 @@ dependencies {
     implementation "androidx.compose.compiler:compiler:$compose_version"
     implementation "androidx.compose.ui:ui-util:$compose_version"
 
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:30.3.2')
+    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
+
     // Dagger-Hilt
     def hilt_lifecycle_viewmodel = "1.0.0-alpha03"
     def hilt_navigation = "1.0.0-alpha03"
@@ -100,8 +106,8 @@ dependencies {
 
     implementation 'com.github.zynkware:Document-Scanning-Android-SDK:1.0.1'
 
-    implementation "io.coil-kt:coil-compose:1.4.0"
-    implementation "io.coil-kt:coil-svg:1.3.2"
+    implementation "io.coil-kt:coil-compose:2.1.0"
+    implementation "io.coil-kt:coil-svg:2.1.0"
     // http
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
@@ -114,5 +120,7 @@ dependencies {
         exclude module: 'okhttp'
     }
 
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
 
 }

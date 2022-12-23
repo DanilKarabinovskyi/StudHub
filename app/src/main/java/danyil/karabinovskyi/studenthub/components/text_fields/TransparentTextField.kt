@@ -3,10 +3,7 @@ package danyil.karabinovskyi.studenthub.components.text_fields
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
@@ -35,7 +32,6 @@ fun TransparentTextField(
     keyboardType: KeyboardType,
     keyboardActions: KeyboardActions = KeyboardActions( onNext = { }),
     imeAction: ImeAction = ImeAction.Next,
-    singleLine: Boolean = true,
     maxLines: Int = 1,
     trailingIcon: @Composable() (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
@@ -46,6 +42,7 @@ fun TransparentTextField(
         modifier = modifier
             .fillMaxWidth()
             .focusRequester(focusRequester = focusRequester),
+        maxLines = maxLines,
         value = text,
         onValueChange = {
             if (it.length <= maxLength) {
@@ -72,6 +69,7 @@ fun TransparentTextField(
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = backgroundColor
         ),
+        textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
     )
     if (error.isNotEmpty()) {
         Text(

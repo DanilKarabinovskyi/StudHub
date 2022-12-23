@@ -5,9 +5,12 @@ import danyil.karabinovskyi.studenthub.core.data.Filter
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.CommentResponse
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostResponse
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.CreateCommentRequest
+import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikeCommentRequest
+import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikePostRequest
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikeUpdateRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.http.*
 
 interface PostsApi {
@@ -17,61 +20,48 @@ interface PostsApi {
         @Query("skip") skip: Int,
         @Query("order") order: String,     // ASC, DESC
         @Query("sort") sort: String,       // Any field
-//        @Query("filter") filter: Filter, // "sport" etc
+        @Query("filter") filter: JSONObject, // "sport" etc
         @Query("socialTag") socialTag: String, // All, My, My University
     ): BasicApiResponse<List<PostResponse>>
 
     @Multipart
-    @POST("posts")
-    suspend fun createPost(
+    @POST("posts/upsert")
+    suspend fun upsertPost(
         @Part("title") title: RequestBody,
+        @Part("id") id: RequestBody,
         @Part("body") description: RequestBody,
         @Part("tags") tags: RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part?
     ): BasicApiResponse<PostResponse>
 
     @GET("posts/{postId}")
     suspend fun getPost(
-        @Path("postId") postId: String,
-    ): BasicApiResponse<PostResponse>
-
-    @PUT("posts/post")
-    suspend fun editPost(
-        @Part("title") title: RequestBody,
-        @Part("body") description: RequestBody,
-        @Part("tags") tags: List<String>,
-        @Part("file") postImage: MultipartBody.Part
+        @Path("postId") postId: Int,
     ): BasicApiResponse<PostResponse>
 
     @DELETE("posts/post")
     suspend fun deletePost(
-        @Query("postId") postId: String,
-    ): BasicApiResponse<Boolean>
+        @Query("id") postId: Int,
+    ): BasicApiResponse<Unit>
 
-    @GET("comment/get")
+    @GET("posts/post/comments/{postId}")
     suspend fun getCommentsForPost(
-        @Query("postId") postId: String
+        @Path("postId") postId: Int
     ): BasicApiResponse<List<CommentResponse>>
 
-    @POST("comment/create")
+    @POST("posts/post/comment/create")
     suspend fun createComment(
         @Body request: CreateCommentRequest
     ): BasicApiResponse<Unit>
 
-    @POST("like")
-    suspend fun likeParent(
-        @Body request: LikeUpdateRequest
-    ): BasicApiResponse<Unit>
+    @POST("posts/post/toggle-like")
+    suspend fun toggleLikePost(
+        @Body request: LikePostRequest
+    ): BasicApiResponse<Boolean>
 
-    @DELETE("unlike")
-    suspend fun unlikeParent(
-        @Query("parentId") parentId: String,
-        @Query("parentType") parentType: Int
-    ): BasicApiResponse<Unit>
-
-    @GET("like/parent")
-    suspend fun getLikesForParent(
-        @Query("parentId") parentId: String
-    ): BasicApiResponse<List<Int>>
+    @POST("posts/post/comment/toggle-like")
+    suspend fun toggleLikeComment(
+        @Body request: LikeCommentRequest
+    ): BasicApiResponse<Boolean>
 
 }

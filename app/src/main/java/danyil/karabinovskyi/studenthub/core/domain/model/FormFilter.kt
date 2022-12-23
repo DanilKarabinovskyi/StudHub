@@ -1,9 +1,7 @@
 package danyil.karabinovskyi.studenthub.core.domain.model
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.SortByAlpha
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,9 +31,9 @@ val priceFilters = listOf(
     FormFilter(name = "$$$$")
 )
 val sortFilters = listOf(
-    FormFilter(name = SocialFilters.ALL.type, icon = Icons.Filled.Android),
-    FormFilter(name = SocialFilters.MINE.type, icon = Icons.Filled.Star),
-    FormFilter(name = SocialFilters.MY_UNIVERSITY.type, icon = Icons.Filled.SortByAlpha)
+    FormFilter(name = SocialFilters.ALL.type, icon = Icons.Filled.PeopleAlt, enabled = true),
+    FormFilter(name = SocialFilters.MINE.type, icon = Icons.Filled.EmojiPeople),
+    FormFilter(name = SocialFilters.MY_UNIVERSITY.type, icon = Icons.Filled.NaturePeople)
 )
 
 enum class SocialFilters(val type: String) {

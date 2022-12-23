@@ -15,6 +15,7 @@
     <string name="error_couldnt_reach_server">\"Oops! Couldn\'t reach server. Check your internet connection.\"</string>
     <string name="oops_something_went_wrong">\"Oops! Something went wrong. Please try again.\"</string>
     <string name="error_file_not_found">Oops! The file couldn\'t be found.</string>
+    <string name="attached_image">Attached Image</string>
 
     <!-- Home Tabs -->
     <string name="home_feed">Home</string>
@@ -25,6 +26,7 @@
 
     <string name="feed">Your Feed</string>
     <string name="all_chats">All Chats</string>
+    <string name="create_chat">Create Chat</string>
 
 
     <string name="back">Navigate back</string>
@@ -36,6 +38,7 @@
     <string name="error_not_logged_in">Oops! Please login before doing that.</string>
     <string name="enter_a_message">Enter a message...</string>
     <string name="enter_a_text">Enter a text</string>
+    <string name="enter_a_title">Enter a title</string>
     <string name="message">Send message</string>
     <string name="delete_post">Delete post</string>
     <string name="successfully_deleted_post">Successfully deleted post</string>
@@ -48,9 +51,11 @@
     <string name="post">Post</string>
     <string name="posts">Posts</string>
     <string name="description">Description</string>
+    <string name="title">Title</string>
     <string name="post_image">Post image</string>
     <string name="post_created">Successfully created post</string>
     <string name="error_description_blank">The description can\'t be empty</string>
+    <string name="error_fields_blank">The fields or tags can\'t be empty</string>
     <string name="error_no_image_picked">Please pick a photo</string>
     <string name="unlike">Unlike</string>
     <string name="like">Like</string>
@@ -61,7 +66,24 @@
     <string name="x_comments">%d comments</string>
     <string name="your_comment">your comment</string>
     <string name="send_comment">Send comment</string>
+    <string name="send_caps">SEND</string>
     <string name="enter_a_comment">Enter a comment...</string>
     <string name="comment_posted">Successfully posted comment</string>
     <string name="label_filters">Filters</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="chat">Chat</string>
+    <string name="name_of_the_chat">Chat Name</string>
+    <string name="emoji_selector_desc">Emoji selector</string>
+    <string name="emoji_selector_bt_desc">Show Emoji selector</string>
+    <string name="dm_desc">Direct Message</string>
+    <string name="attach_photo_desc">Attach Photo</string>
+    <string name="map_selector_desc">Location selector</string>
+    <string name="videochat_desc">Start videochat</string>
+    <string name="textfield_desc">Text input</string>
+    <string name="not_available">Functionality currently not available</string>
+    <string name="not_available_subtitle">Grab a beverage and check back later!</string>
+    <string name="info">Information</string>
+    <string name="more_options">More options</string>
+    <string name="jump_to_bottom">Jump To Bottom</string>
+    <string name="jump_to_unread">Jump To Unread Messages</string>
 </resources>
