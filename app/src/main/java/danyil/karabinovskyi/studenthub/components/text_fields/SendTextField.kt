@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.core.model.states.StandardTextFieldState
-import danyil.karabinovskyi.studenthub.features.auth.presentation.registration.RegistrationEvent
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceLarge
 
 

@@ -29,7 +29,7 @@
     <color name="disabled_dark">#4C525C</color>
     <color name="borders_dark">#272A30</color>
     <color name="input_background_dark">#1C1E22</color>
-    <color name="app_background_dark">#000000</color>
+    <color name="app_background_dark">#121212</color>
     <color name="bars_background_dark">#121416</color>
     <color name="link_background_dark">#00193D</color>
     <color name="overlay_regular_dark">#33000000</color>

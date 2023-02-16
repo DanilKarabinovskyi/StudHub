@@ -113,11 +113,12 @@ fun ChatScreen(
             ) {
                 Box(modifier = Modifier.weight(1f)) {
                     LazyColumn(
+                        modifier = Modifier.fillMaxSize(1f),
                         reverseLayout = true,
                         state = scrollState,
                         contentPadding = rememberInsetsPaddingValues(
                             insets = LocalWindowInsets.current.statusBars,
-                            additionalTop = 90.dp
+                            additionalTop = 30.dp
                         ),
                     ) {
                         for (i in 0 until messages.size) {

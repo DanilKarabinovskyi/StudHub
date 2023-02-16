@@ -84,7 +84,9 @@ class ChatViewModel @Inject constructor(
                 INITIAL_MESSAGES -> {
                     val initialMessage = Gson().fromJson(event.message, MessagesModel::class.java)
                     val messages = initialMessage.data.map { it.toMessage() }.toMutableList()
-                    _messages.addAll(messages)
+                    if (_messages.isEmpty() || messages.last().id != _messages.last().id){
+                        _messages.addAll(messages)
+                    }
                     viewModelScope.launch {
                         findLastReadMessage()
                     }
@@ -99,7 +101,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun sendMessage(text: String) {
-        val message = MessageRequest(data = DataObject(text, Base64.getEncoder().encodeToString(_messageImageUri.value?.toFile()?.readBytes()).replace("\u003d","=")))
+        val message = MessageRequest(data = DataObject(text, if(_messageImageUri.value!= null ) Base64.getEncoder().encodeToString(_messageImageUri.value?.toFile()?.readBytes()).replace("\u003d","=") else ""))
         ws?.send(Gson().toJson(message, MessageRequest::class.java))
     }
 
@@ -112,7 +114,9 @@ class ChatViewModel @Inject constructor(
         val message = _messages.find { it.isMessageRead == true }
         val prevMessage = _messages.getOrNull(_messages.indexOf(message) - 1)
         lastReadPosition.value = if(_messages.indexOf(prevMessage) == -1) 0 else _messages.indexOf(prevMessage)
-        sendReadIds((prevMessage?:_messages.last()).id,_messages.first().id)
+        if(_messages.isNotEmpty()){
+            sendReadIds((prevMessage?:_messages.last()).id,_messages.first().id)
+        }
     }
 
     fun onEvent(event: ChatViewModelEvent) {
