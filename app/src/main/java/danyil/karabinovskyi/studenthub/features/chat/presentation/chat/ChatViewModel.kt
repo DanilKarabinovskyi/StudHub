@@ -84,7 +84,7 @@ class ChatViewModel @Inject constructor(
                 INITIAL_MESSAGES -> {
                     val initialMessage = Gson().fromJson(event.message, MessagesModel::class.java)
                     val messages = initialMessage.data.map { it.toMessage() }.toMutableList()
-                    if (_messages.isEmpty() || messages.last().id != _messages.last().id){
+                    if (_messages.isEmpty() || messages.first().id != _messages.first().id){
                         _messages.addAll(messages)
                     }
                     viewModelScope.launch {
@@ -93,8 +93,10 @@ class ChatViewModel @Inject constructor(
                 }
                 NEW_MESSAGE -> {
                     val initialMessage = Gson().fromJson(event.message, AddMessageModel::class.java)
-                    _messages.add(0, initialMessage.data.message.toMessage())
+                    if (_messages.isEmpty() || initialMessage.data.message.id != _messages.first().id){
+                        _messages.add(0, initialMessage.data.message.toMessage())
 
+                    }
                 }
             }
         }
