@@ -5,18 +5,16 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import danyil.karabinovskyi.studenthub.components.text.StudText
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
@@ -30,7 +28,7 @@ fun TransparentTextField(
     backgroundColor: Color = Color.Transparent,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     keyboardType: KeyboardType,
-    keyboardActions: KeyboardActions = KeyboardActions( onNext = { }),
+    keyboardActions: KeyboardActions = KeyboardActions(onNext = { }),
     imeAction: ImeAction = ImeAction.Next,
     maxLines: Int = 1,
     trailingIcon: @Composable() (() -> Unit)? = null,
@@ -50,7 +48,7 @@ fun TransparentTextField(
             }
         },
         label = {
-            Text(text = textLabel)
+            StudText(text = textLabel, color = StudentHubTheme.colorsV2.primary)
         },
         trailingIcon = trailingIcon,
         keyboardOptions = KeyboardOptions(
@@ -59,23 +57,28 @@ fun TransparentTextField(
             imeAction = imeAction
         ),
         placeholder = {
-            Text(
+            StudText(
                 text = hint,
-                style = MaterialTheme.typography.body1
+                color = StudentHubTheme.colorsV2.primary
             )
         },
         keyboardActions = keyboardActions,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundColor
+            backgroundColor = backgroundColor,
+            focusedLabelColor = StudentHubTheme.colorsV2.primary,
+            placeholderColor = StudentHubTheme.colorsV2.primary,
+            cursorColor = StudentHubTheme.colorsV2.primaryAccent,
+            unfocusedIndicatorColor = StudentHubTheme.colorsV2.primary,
+            focusedIndicatorColor = StudentHubTheme.colorsV2.primaryAccent,
         ),
         textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
     )
     if (error.isNotEmpty()) {
         Text(
             text = error,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.error,
+            style = StudentHubTheme.typography.bodySmall,
+            color = StudentHubTheme.colorsV2.errorAccent,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .fillMaxWidth()

@@ -258,6 +258,9 @@ private val LocalShapes = compositionLocalOf<Shapes> {
 private val LocalDateFormatter = compositionLocalOf<DateFormatter> {
     error("No DateFormatter provided!")
 }
+private val LocalDimensions = compositionLocalOf<StudentHubDimensions> {
+    error("No DateFormatter provided!")
+}
 
 @Composable
 fun StudentHubTheme(
@@ -265,6 +268,7 @@ fun StudentHubTheme(
     dateFormatter: DateFormatter = DateFormatter.from(LocalContext.current),
     typography: Typography = Typography.defaultTypography(),
     shapes: Shapes = Shapes.defaultShapes(),
+    dimensions: StudentHubDimensions = StudentHubDimensions(),
     colors: StudentHubColors = if (isDarkTheme) DarkColorPalette else LightColorPalette,
     colorsV2: Colors = if (isDarkTheme) Colors.defaultDarkColors() else Colors.defaultColors(),
     content: @Composable () -> Unit
@@ -280,7 +284,8 @@ fun StudentHubTheme(
         LocalTypography provides typography,
         LocalShapes provides shapes,
         LocalStudentHubColors provides colors,
-        LocalStudentHubColorsV2 provides colorsV2
+        LocalStudentHubColorsV2 provides colorsV2,
+        LocalDimensions provides dimensions
     ){
         content()
     }
@@ -292,10 +297,15 @@ object StudentHubTheme {
         @ReadOnlyComposable
         get() = LocalStudentHubColors.current
 
-    val colorsV2: danyil.karabinovskyi.studenthub.ui.theme.Colors
+    val colorsV2: Colors
         @Composable
         @ReadOnlyComposable
         get() = LocalStudentHubColorsV2.current
+
+    val dimensions: StudentHubDimensions
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalDimensions.current
 
     val dateFormatter: DateFormatter
         @Composable

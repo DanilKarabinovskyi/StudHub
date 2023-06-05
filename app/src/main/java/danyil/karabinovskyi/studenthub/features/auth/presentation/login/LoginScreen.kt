@@ -40,6 +40,7 @@ import danyil.karabinovskyi.studenthub.common.model.UiEvent
 import danyil.karabinovskyi.studenthub.common.model.asString
 import danyil.karabinovskyi.studenthub.components.buttons.RoundedButton
 import danyil.karabinovskyi.studenthub.components.text_fields.TransparentTextField
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -99,7 +100,7 @@ fun LoginScreen(
                         .constrainAs(surface) {
                             bottom.linkTo(parent.bottom)
                         },
-                    color = MaterialTheme.colors.surface,
+                    color = StudentHubTheme.colorsV2.overlay,
                     shape = RoundedCornerShape(
                         topStartPercent = 8,
                         topEndPercent = 8

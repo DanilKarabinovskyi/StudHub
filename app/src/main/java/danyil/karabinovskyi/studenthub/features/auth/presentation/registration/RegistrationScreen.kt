@@ -88,7 +88,7 @@ fun RegistrationScreen(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colors.surface)
+            .background(StudentHubTheme.colorsV2.overlay)
     ) {
         Column(
             modifier = Modifier
@@ -101,6 +101,7 @@ fun RegistrationScreen(
             ) {
                 IconButton(
                     onClick = {
+                        onBack()
                         onBack()
                     }
                 ) {
@@ -227,7 +228,7 @@ fun RegistrationScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     SocialMediaButton(
-                        text = "Documents Photo",
+                        text = "Add Documents Photo",
                         onClick = {
                             launcher.launch(0)
                         },
@@ -249,7 +250,7 @@ fun RegistrationScreen(
 
                         withStyle(
                             style = SpanStyle(
-                                color = MaterialTheme.colors.primary,
+                                color = StudentHubTheme.colorsV2.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         ) {

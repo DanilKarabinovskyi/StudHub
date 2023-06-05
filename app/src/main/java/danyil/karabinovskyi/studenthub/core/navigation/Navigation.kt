@@ -108,7 +108,7 @@ fun NavGraphBuilder.addPostsDetail(
         deepLinks = listOf(
             navDeepLink {
                 action = Intent.ACTION_VIEW
-                uriPattern = "https://studentHub.com/{postId}"
+                uriPattern = "https://student-hub.com/{postId}"
             }
         )
     ) {
@@ -195,7 +195,7 @@ fun NavGraphBuilder.addChat(
     }
 }
 
-private fun navigateWithPop(
+fun navigateWithPop(
     pop:String,
     destination:String,
     inclusive: Boolean = true,

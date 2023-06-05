@@ -7,5 +7,6 @@ sealed class CreateEditPostEvent {
     data class EnterDescription(val value: String): CreateEditPostEvent()
     data class PickImage(val uri: Uri?): CreateEditPostEvent()
     data class CropImage(val uri: Uri?): CreateEditPostEvent()
-    object PostImage: CreateEditPostEvent()
+    data class AddAttachments(val uri: String?): CreateEditPostEvent()
+    object CreatePost: CreateEditPostEvent()
 }

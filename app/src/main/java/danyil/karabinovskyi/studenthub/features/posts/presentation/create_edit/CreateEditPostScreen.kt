@@ -2,13 +2,14 @@ package danyil.karabinovskyi.studenthub.features.posts.presentation.create_edit
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,9 +31,13 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.common.contracts.CropActivityResultContract
+import danyil.karabinovskyi.studenthub.common.extensions.doesFileExistInAttachments
+import danyil.karabinovskyi.studenthub.common.extensions.getFileName
+import danyil.karabinovskyi.studenthub.common.extensions.saveFileFromUriToAttachments
 import danyil.karabinovskyi.studenthub.common.model.UiEvent
 import danyil.karabinovskyi.studenthub.common.model.asString
 import danyil.karabinovskyi.studenthub.components.filter_bar.FilterBar
+import danyil.karabinovskyi.studenthub.components.text.StudText
 import danyil.karabinovskyi.studenthub.components.text_fields.TransparentTextField
 import danyil.karabinovskyi.studenthub.components.toolbar.StandardToolbar
 import danyil.karabinovskyi.studenthub.features.posts.presentation.util.PostConstants
@@ -39,6 +45,7 @@ import danyil.karabinovskyi.studenthub.features.posts.presentation.util.PostErro
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceLarge
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceMedium
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceSmall
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
@@ -55,6 +62,7 @@ fun CreateEditPostScreen(
     viewModel: CreateEditPostViewModel = hiltViewModel()
 ) {
     val imageUri = viewModel.chosenImageUri.value
+    val context = LocalContext.current
 
     val cropActivityLauncher = rememberLauncherForActivityResult(
         contract = CropActivityResultContract(16f, 9f)
@@ -66,8 +74,18 @@ fun CreateEditPostScreen(
     ) {
         it?.let { cropActivityLauncher.launch(it) }
     }
+    val attachmentsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if(uri != null){
+            if(!context.doesFileExistInAttachments(context.getFileName(uri))){
+                context.saveFileFromUriToAttachments(uri,context.getFileName(uri))
+            }
+            viewModel.onEvent(CreateEditPostEvent.AddAttachments(context.getFileName(uri)))
+        }
 
-    val context = LocalContext.current
+    }
+
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -97,7 +115,7 @@ fun CreateEditPostScreen(
                 Text(
                     text = stringResource(id = R.string.post),
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colors.onBackground
+                    color = StudentHubTheme.colorsV2.primary
                 )
             }
         )
@@ -105,6 +123,7 @@ fun CreateEditPostScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(SpaceLarge)
+                .verticalScroll(rememberScrollState())
         ) {
             Box(
                 modifier = Modifier
@@ -199,26 +218,82 @@ fun CreateEditPostScreen(
             )
             Spacer(modifier = Modifier.height(SpaceLarge))
             Button(
+                shape = StudentHubTheme.shapes.quotedAttachment,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = StudentHubTheme.colorsV2.buttonBackgroundPrimary
+                ),
                 onClick = {
-                    viewModel.onEvent(CreateEditPostEvent.PostImage)
+                    attachmentsLauncher.launch("*/*")
                 },
                 enabled = !viewModel.isLoading.value,
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier
+                    .align(Alignment.Start),
             ) {
                 Text(
-                    text = stringResource(id = R.string.post),
-                    color = MaterialTheme.colors.onPrimary
+                    text = stringResource(id = R.string.attach_files),
+                    color = StudentHubTheme.colorsV2.primary
                 )
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 if (viewModel.isLoading.value) {
                     CircularProgressIndicator(
-                        color = MaterialTheme.colors.onPrimary,
+                        color = StudentHubTheme.colorsV2.primaryAccent,
                         modifier = Modifier
                             .size(20.dp)
                             .align(CenterVertically)
                     )
                 } else {
-                    Icon(imageVector = Icons.Default.Send, contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = null,
+                        tint = StudentHubTheme.colorsV2.iconPrimary
+                    )
+                }
+            }
+            LazyRow {
+                items(viewModel.attachmentsUri.value.size) { i ->
+                    val attachment = viewModel.attachmentsUri.value[i]
+                    Column(modifier = Modifier.width(100.dp)) {
+                        Icon(
+                            modifier = Modifier.size(40.dp),
+                            imageVector = Icons.Default.PictureAsPdf,
+                            contentDescription = null,
+                            tint = Color.Red
+                        )
+                        StudText(text = attachment)
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(SpaceLarge))
+            Button(
+                shape = StudentHubTheme.shapes.quotedAttachment,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = StudentHubTheme.colorsV2.buttonBackgroundPrimary
+                ),
+                onClick = {
+                    viewModel.onEvent(CreateEditPostEvent.CreatePost)
+                },
+                enabled = !viewModel.isLoading.value,
+                modifier = Modifier
+                    .align(Alignment.End),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.post),
+                    color = StudentHubTheme.colorsV2.primary
+                )
+                Spacer(modifier = Modifier.width(SpaceSmall))
+                if (viewModel.isLoading.value) {
+                    CircularProgressIndicator(
+                        color = StudentHubTheme.colorsV2.primaryAccent,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(CenterVertically)
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Send,
+                        contentDescription = null,
+                        tint = StudentHubTheme.colorsV2.iconPrimary
+                    )
                 }
             }
         }

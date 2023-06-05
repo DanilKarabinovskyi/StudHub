@@ -1,13 +1,11 @@
 package danyil.karabinovskyi.studenthub.features.posts.data.remote.api
 
 import danyil.karabinovskyi.studenthub.common.model.BasicApiResponse
-import danyil.karabinovskyi.studenthub.core.data.Filter
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.CommentResponse
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.entity.PostResponse
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.CreateCommentRequest
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikeCommentRequest
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikePostRequest
-import danyil.karabinovskyi.studenthub.features.posts.data.remote.request.LikeUpdateRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -31,7 +29,8 @@ interface PostsApi {
         @Part("id") id: RequestBody,
         @Part("body") description: RequestBody,
         @Part("tags") tags: RequestBody,
-        @Part file: MultipartBody.Part?
+        @Part file: MultipartBody.Part?,
+        @Part attachments: MultipartBody.Part?,
     ): BasicApiResponse<PostResponse>
 
     @GET("posts/{postId}")
@@ -52,7 +51,7 @@ interface PostsApi {
     @POST("posts/post/comment/create")
     suspend fun createComment(
         @Body request: CreateCommentRequest
-    ): BasicApiResponse<Unit>
+    ): BasicApiResponse<Boolean>
 
     @POST("posts/post/toggle-like")
     suspend fun toggleLikePost(

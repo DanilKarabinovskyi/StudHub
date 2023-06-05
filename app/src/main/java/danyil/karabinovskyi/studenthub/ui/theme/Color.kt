@@ -58,6 +58,9 @@ val Rose2 = Color(0xfffdbbcf)
 val Rose1 = Color(0xfffed6e2)
 val Rose0 = Color(0xfffff2f6)
 
+val MineShaft = Color(0xff363636)
+val MineShaft_Bar = Color(0xff2b2b2b)
+
 val Neutral8 = Color(0xff121212)
 val Neutral7 = Color(0xde000000)
 val Neutral6 = Color(0x99000000)
@@ -73,6 +76,8 @@ val FunctionalRedDark = Color(0xffea6d7e)
 val FunctionalGreen = Color(0xff52c41a)
 val FunctionalGrey = Color(0xfff6f6f6)
 val FunctionalDarkGrey = Color(0xff2e2e2e)
+
+val BlueDianne = Color(0xff1a2c3a)
 
 const val AlphaNearOpaque = 0.95f
 
@@ -115,9 +120,14 @@ data class Colors(
     val disabled: Color,
     val borders: Color,
     val inputBackground: Color,
-    val appBackground: Color,
+    val background: Color,
     val onBackground: Color,
-    val barsBackground: Color,
+    val secondaryBackground: Color,
+    val buttonBackgroundPrimary: Color,
+    val barsContent: Color,
+    val iconPrimary: Color,
+    val iconDisabled: Color,
+    val iconAfterAction: Color,
     val linkBackground: Color,
     val overlay: Color,
     val overlayDark: Color,
@@ -132,22 +142,25 @@ data class Colors(
     val threadSeparatorGradientStart: Color,
     val threadSeparatorGradientEnd: Color,
     val primary: Color,
+    val black: Color,
 ) {
 
     companion object {
 
         @Composable
         fun defaultColors(): Colors = Colors(
-            textHighEmphasis = colorResource(R.color.text_high_emphasis),
-            textLowEmphasis = colorResource(R.color.text_low_emphasis),
-            disabled = colorResource(R.color.disabled),
+            textHighEmphasis = Neutral1,
+            textLowEmphasis = Neutral2,
+            disabled = Neutral3,
             borders = colorResource(R.color.borders),
             inputBackground = colorResource(R.color.input_background),
-            appBackground = colorResource(R.color.app_background),
-            onBackground = Color(0xFF2D3132),
-            barsBackground = colorResource(R.color.bars_background),
+            background = colorResource(R.color.app_background),
+            onBackground = Neutral3,
+            secondaryBackground = MineShaft,
+            barsContent = MineShaft_Bar,
+            buttonBackgroundPrimary = Ocean11,
             linkBackground = colorResource(R.color.link_background),
-            overlay = colorResource(R.color.overlay_regular),
+            overlay = BlueDianne,
             overlayDark = colorResource(R.color.overlay_dark),
             primaryAccent = colorResource(R.color.primary_accent),
             errorAccent = colorResource(R.color.error_accent),
@@ -159,21 +172,27 @@ data class Colors(
             giphyMessageBackground = colorResource(R.color.bars_background),
             threadSeparatorGradientStart = colorResource(R.color.input_background),
             threadSeparatorGradientEnd = colorResource(R.color.app_background),
-            primary = Ocean8,
+            primary = Neutral0,
+            iconPrimary = Neutral0,
+            iconDisabled = Neutral3,
+            iconAfterAction = Shadow3,
+            black = Neutral8,
         )
 
         @Composable
         fun defaultDarkColors(): Colors = Colors(
-            textHighEmphasis = colorResource(R.color.text_high_emphasis_dark),
-            textLowEmphasis = colorResource(R.color.text_low_emphasis_dark),
-            disabled = colorResource(R.color.disabled_dark),
+            textHighEmphasis = Neutral1,
+            textLowEmphasis = Neutral2,
+            disabled = Neutral3,
             borders = colorResource(R.color.borders_dark),
             inputBackground = colorResource(R.color.input_background_dark),
-            appBackground = colorResource(R.color.app_background_dark),
-            onBackground = Color(0xFFE0E3E3),
-            barsBackground = colorResource(R.color.bars_background_dark),
+            background = Neutral8,
+            onBackground = Neutral3,
+            secondaryBackground = MineShaft,
+            barsContent = MineShaft_Bar,
+            buttonBackgroundPrimary = Ocean11,
             linkBackground = colorResource(R.color.link_background_dark),
-            overlay = colorResource(R.color.overlay_regular_dark),
+            overlay = BlueDianne,
             overlayDark = colorResource(R.color.overlay_dark_dark),
             primaryAccent = colorResource(R.color.primary_accent_dark),
             errorAccent = colorResource(R.color.error_accent_dark),
@@ -185,7 +204,11 @@ data class Colors(
             giphyMessageBackground = colorResource(R.color.bars_background_dark),
             threadSeparatorGradientStart = colorResource(R.color.input_background_dark),
             threadSeparatorGradientEnd = colorResource(R.color.app_background_dark),
-            primary = Ocean10,
+            primary = Neutral0,
+            iconPrimary = Neutral0,
+            iconDisabled = Neutral3,
+            iconAfterAction = Shadow3,
+            black = Neutral8,
         )
     }
 }

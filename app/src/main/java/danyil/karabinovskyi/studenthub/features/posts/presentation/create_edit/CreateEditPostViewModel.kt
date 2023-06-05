@@ -50,6 +50,9 @@ class CreateEditPostViewModel @Inject constructor(
     private val _oldImageUrl = mutableStateOf<String?>(null)
     val oldImageUrl: State<String?> = _oldImageUrl
 
+    private val _attachmentsUri = mutableStateOf<MutableList<String>>(mutableListOf())
+    val attachmentsUri: State<MutableList<String>> = _attachmentsUri
+
     private val _chosenFilters = mutableStateOf<List<String>>(mutableListOf<String>())
     val chosenFilters: State<List<String>> = _chosenFilters
 
@@ -68,25 +71,28 @@ class CreateEditPostViewModel @Inject constructor(
 
     }
 
-    fun onEvent(eventEdit: CreateEditPostEvent) {
-        when (eventEdit) {
+    fun onEvent(event: CreateEditPostEvent) {
+        when (event) {
             is CreateEditPostEvent.EnterTitle -> {
                 _titleState.value = titleState.value.copy(
-                    text = eventEdit.value
+                    text = event.value
                 )
             }
             is CreateEditPostEvent.EnterDescription -> {
                 _descriptionState.value = descriptionState.value.copy(
-                    text = eventEdit.value
+                    text = event.value
                 )
             }
             is CreateEditPostEvent.PickImage -> {
-                _chosenImageUri.value = eventEdit.uri
+                _chosenImageUri.value = event.uri
             }
             is CreateEditPostEvent.CropImage -> {
-                _chosenImageUri.value = eventEdit.uri
+                _chosenImageUri.value = event.uri
             }
-            is CreateEditPostEvent.PostImage -> {
+            is CreateEditPostEvent.AddAttachments -> {
+                event.uri?.let { _attachmentsUri.value.add(it) }
+            }
+            is CreateEditPostEvent.CreatePost -> {
                 viewModelScope.launch {
                     _isLoading.value = true
                     val result = postUseCases.createPostUseCase.execute(
@@ -96,6 +102,7 @@ class CreateEditPostViewModel @Inject constructor(
                             description = descriptionState.value.text,
                             tags = chosenFilters.value.toList(),
                             chosenImageUri.value,
+                            attachmentsUri.value,
                         ),
                     )
                     when (result) {

@@ -69,7 +69,7 @@ class ChatViewModel @Inject constructor(
 
     private fun open() {
         val request: Request = Request.Builder()
-            .url("${CHAT_URL}${savedStateHandle.get<String>("chatIdToOpen").toString()}")
+            .url("${CHAT_URL}${savedStateHandle.get<Int>("chatIdToOpen").toString()}")
             .addHeader("Authorization", "Bearer " + sharedPrefs.getToken())
             .build()
         ws = client.newWebSocket(request = request, eventsObserver)
@@ -95,7 +95,6 @@ class ChatViewModel @Inject constructor(
                     val initialMessage = Gson().fromJson(event.message, AddMessageModel::class.java)
                     if (_messages.isEmpty() || initialMessage.data.message.id != _messages.first().id){
                         _messages.add(0, initialMessage.data.message.toMessage())
-
                     }
                 }
             }

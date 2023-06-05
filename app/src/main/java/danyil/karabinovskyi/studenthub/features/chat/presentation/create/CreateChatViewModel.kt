@@ -3,16 +3,13 @@ package danyil.karabinovskyi.studenthub.features.chat.presentation.create
 import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import danyil.karabinovskyi.studenthub.common.model.Event
 import danyil.karabinovskyi.studenthub.common.model.Resource
 import danyil.karabinovskyi.studenthub.common.model.UiEvent
 import danyil.karabinovskyi.studenthub.common.utils.Paginate
 import danyil.karabinovskyi.studenthub.core.data.ChatQuery
-import danyil.karabinovskyi.studenthub.core.data.Query
 import danyil.karabinovskyi.studenthub.core.data.entity.User
 import danyil.karabinovskyi.studenthub.core.model.states.StandardTextFieldState
 import danyil.karabinovskyi.studenthub.core.presentation.PagingState
@@ -20,7 +17,6 @@ import danyil.karabinovskyi.studenthub.features.chat.data.model.CreateChatReques
 import danyil.karabinovskyi.studenthub.features.chat.domain.use_case.AddUserToChatUseCase
 import danyil.karabinovskyi.studenthub.features.chat.domain.use_case.CreateChatUseCase
 import danyil.karabinovskyi.studenthub.features.chat.domain.use_case.GetUsersUseCase
-import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -139,14 +135,6 @@ class CreateChatViewModel @Inject constructor(
             kotlin.runCatching {
                 paginator.loadNextItems()
 
-//                val result = getUsersUseCase.execute(query)
-//                when (result) {
-//                    is Resource.Success -> {
-//                    }
-//                    is Resource.Error -> {
-//
-//                    }
-//                }
             }.onFailure {
 
             }

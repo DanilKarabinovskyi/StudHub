@@ -35,6 +35,7 @@ import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import danyil.karabinovskyi.studenthub.common.utils.Constants
+import danyil.karabinovskyi.studenthub.components.text.StudText
 import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post
 import danyil.karabinovskyi.studenthub.ui.theme.*
 
@@ -97,10 +98,17 @@ fun Post(
                 Spacer(modifier = Modifier.height(SpaceSmall))
                 Text(
                     text = buildAnnotatedString {
-                        append(post.description)
                         withStyle(
                             SpanStyle(
-                                color = HintGray,
+                                color = StudentHubTheme.colorsV2.textHighEmphasis,
+                            )
+                        ) {
+                            append(post.description)
+                        }
+                        withStyle(
+                            SpanStyle(
+                                color = StudentHubTheme.colorsV2.textLowEmphasis,
+                                fontSize = StudentHubTheme.dimensions.SizeSmall
                             )
                         ) {
                             append(
@@ -120,7 +128,7 @@ fun Post(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
+                    StudText(
                         text = stringResource(
                             id = danyil.karabinovskyi.studenthub.R.string.x_likes,
                             post.likesCount
@@ -129,7 +137,7 @@ fun Post(
                         fontSize = 16.sp,
                         style = MaterialTheme.typography.h2
                     )
-                    Text(
+                    StudText(
                         text = stringResource(
                             id = danyil.karabinovskyi.studenthub.R.string.x_comments,
                             post.commentsCount
@@ -185,14 +193,18 @@ fun EngagementButtons(
                 tint = if (isLiked) {
                     Rose9
                 } else {
-                    Rose0
+                    StudentHubTheme.colorsV2.iconPrimary
                 },
                 contentDescription = if (isLiked) {
-                    stringResource(id =
-                        danyil.karabinovskyi.studenthub.R.string.unlike)
+                    stringResource(
+                        id =
+                        danyil.karabinovskyi.studenthub.R.string.unlike
+                    )
                 } else {
-                    stringResource(id =
-                        danyil.karabinovskyi.studenthub.R.string.like)
+                    stringResource(
+                        id =
+                        danyil.karabinovskyi.studenthub.R.string.like
+                    )
                 }
             )
         }
@@ -205,8 +217,11 @@ fun EngagementButtons(
         ) {
             Icon(
                 imageVector = Icons.Filled.Comment,
-                contentDescription = stringResource(id =
-                    danyil.karabinovskyi.studenthub.R.string.comment)
+                contentDescription = stringResource(
+                    id =
+                    danyil.karabinovskyi.studenthub.R.string.comment
+                ),
+                tint = StudentHubTheme.colorsV2.iconPrimary
             )
         }
         Spacer(modifier = Modifier.width(SpaceMedium))
@@ -214,24 +229,30 @@ fun EngagementButtons(
             onClick = {
                 onShareClick()
             },
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize),
         ) {
             Icon(
                 imageVector = Icons.Filled.Share,
-                contentDescription = stringResource(id =
-                    danyil.karabinovskyi.studenthub.R.string.share)
+                contentDescription = stringResource(
+                    id =
+                    danyil.karabinovskyi.studenthub.R.string.share
+                ),
+                tint = StudentHubTheme.colorsV2.iconPrimary
             )
         }
         Spacer(modifier = Modifier.width(SpaceMedium))
-        if (canDelete){
+        if (canDelete) {
             IconButton(
                 onClick = onDeleteClick,
                 modifier = Modifier.size(iconSize)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id =
-                    danyil.karabinovskyi.studenthub.R.string.delete_post)
+                    contentDescription = stringResource(
+                        id =
+                        danyil.karabinovskyi.studenthub.R.string.delete_post
+                    ),
+                    tint = StudentHubTheme.colorsV2.iconPrimary
                 )
             }
         }
@@ -261,13 +282,14 @@ fun ActionRow(
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
-                color = StudentHubTheme.colors.textPrimary,
-                fontSize = 20.sp
+                color = StudentHubTheme.colorsV2.textHighEmphasis,
+                fontSize = StudentHubTheme.dimensions.SizeExtraLarge
             ),
             modifier = Modifier
                 .clickable {
                     onUsernameClick()
-                }.padding(top = SpaceSmall, bottom = SpaceSmall)
+                }
+                .padding(top = SpaceSmall, bottom = SpaceSmall)
         )
         EngagementButtons(
             isLiked = isLiked,

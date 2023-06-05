@@ -25,6 +25,7 @@ import danyil.karabinovskyi.studenthub.components.chat.channels.ChannelItem
 import danyil.karabinovskyi.studenthub.components.text_fields.InputSelector
 import danyil.karabinovskyi.studenthub.components.text_fields.UserInputText
 import danyil.karabinovskyi.studenthub.components.toolbar.StandardToolbar
+import danyil.karabinovskyi.studenthub.components.view.StudDivider
 import danyil.karabinovskyi.studenthub.core.app.MainDestinations
 import danyil.karabinovskyi.studenthub.core.data.entity.Channel
 import danyil.karabinovskyi.studenthub.core.data.entity.User
@@ -51,13 +52,19 @@ fun ChatsScreen(
                     Text(
                         text = stringResource(id = R.string.all_chats),
                         fontWeight = FontWeight.Bold,
-                        color = StudentHubTheme.colors.textPrimary
+                        color = StudentHubTheme.colorsV2.primary
                     )
                 } else {
                     UserInputText(
                         modifier = Modifier.focusRequester(focusRequester),
                         textFieldValue = viewModel.searchState.value.text,
-                        onTextChanged = { viewModel.onEvent(ChatsViewModel.Companion.ChatsViewModelEvent.EnterSearchField(it)) },
+                        onTextChanged = {
+                            viewModel.onEvent(
+                                ChatsViewModel.Companion.ChatsViewModelEvent.EnterSearchField(
+                                    it
+                                )
+                            )
+                        },
                         hint = "Enter chat name",
                         onTextFieldFocused = { focused ->
                             if (focused) {
@@ -67,7 +74,7 @@ fun ChatsScreen(
                             textFieldFocusState = focused
                         },
                     )
-                    LaunchedEffect(key1 = Unit){
+                    LaunchedEffect(key1 = Unit) {
                         focusRequester.requestFocus()
                     }
 
@@ -78,7 +85,7 @@ fun ChatsScreen(
             showBackArrow = false,
             navActions = {
                 IconButton(onClick = {
-                    if(!searchIsShown){
+                    if (!searchIsShown) {
                         viewModel.clearSearch()
                     }
                     searchIsShown = !searchIsShown
@@ -87,13 +94,13 @@ fun ChatsScreen(
                         Icon(
                             imageVector = Icons.Default.Cancel,
                             contentDescription = "",
-                            tint = StudentHubTheme.colors.iconPrimary
+                            tint = StudentHubTheme.colorsV2.iconPrimary
                         )
                     } else {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "",
-                            tint = StudentHubTheme.colors.iconPrimary
+                            tint = StudentHubTheme.colorsV2.iconPrimary
                         )
                     }
                 }
@@ -103,7 +110,7 @@ fun ChatsScreen(
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "",
-                        tint = StudentHubTheme.colors.iconPrimary
+                        tint = StudentHubTheme.colorsV2.iconPrimary
                     )
                 }
             }
@@ -119,6 +126,7 @@ fun ChatsScreen(
                         },
                         onChannelLongClick = {}
                     )
+                    StudDivider()
                 }
                 item {
                     Spacer(modifier = Modifier.height(90.dp))

@@ -49,10 +49,14 @@
     <string name="create_post">Create post</string>
     <string name="choose_image">Choose image</string>
     <string name="post">Post</string>
+    <string name="attach_files">Attach File</string>
+    <string name="attachments">Attachments</string>
     <string name="posts">Posts</string>
+    <string name="posts_you_may_like">Posts you may like</string>
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="post_image">Post image</string>
+    <string name="post_details">Post Details</string>
     <string name="post_created">Successfully created post</string>
     <string name="error_description_blank">The description can\'t be empty</string>
     <string name="error_fields_blank">The fields or tags can\'t be empty</string>
@@ -61,7 +65,7 @@
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
-    <string name="read_more">Read more</string>
+    <string name="read_more">Read more...</string>
     <string name="x_likes">%d likes</string>
     <string name="x_comments">%d comments</string>
     <string name="your_comment">your comment</string>

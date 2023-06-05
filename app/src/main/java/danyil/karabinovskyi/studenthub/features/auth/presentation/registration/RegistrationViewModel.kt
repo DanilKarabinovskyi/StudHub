@@ -87,7 +87,7 @@ class RegistrationViewModel @Inject constructor(
     private fun registrate() {
 
         viewModelScope.launch {
-            val registerResult = gotFileAsRequestBody()?.let {
+            val registerResult = gotFileAsRequestBody().let {
                 registrationUseCase(
                     _passwordState.value.text.toRequestBody(),
                     _emailState.value.text.toRequestBody(),

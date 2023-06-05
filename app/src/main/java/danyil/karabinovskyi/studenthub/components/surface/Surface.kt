@@ -23,8 +23,8 @@ import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 fun Surface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: Color = StudentHubTheme.colors.uiBackground,
-    contentColor: Color = StudentHubTheme.colors.textSecondary,
+    color: Color = StudentHubTheme.colorsV2.background,
+    contentColor: Color = StudentHubTheme.colorsV2.textHighEmphasis,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
     content: @Composable () -> Unit

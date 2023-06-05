@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 @Composable
 fun RoundedButton(
@@ -23,7 +21,12 @@ fun RoundedButton(
 ) {
     if(!displayProgressBar) {
         Button(
-            modifier = modifier.width(280.dp).height(50.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = StudentHubTheme.colorsV2.buttonBackgroundPrimary
+            ),
+            modifier = modifier
+                .width(280.dp)
+                .height(50.dp),
             onClick = onClick,
             enabled = enabled,
             shape = RoundedCornerShape(50),

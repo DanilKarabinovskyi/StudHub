@@ -56,29 +56,37 @@ class PostsViewModel @Inject constructor(
 
     private val paginator = Paginate.Base(
         onLoadUpdated = { isLoading ->
-            _pagingState.value = pagingState.value.copy(
-                isLoading = isLoading
-            )
-        },
-        onRequest = { page ->
+            _pagingState.value = pagingState.value.copy(isLoading = isLoading)
+        }, onRequest = { page ->
             postUseCases.getPostsUseCase.execute(
-                query = query.copy(
-                    take = query.take * page,
-                    skip = query.take * (page - 1)
-                )
+                query = query.copy(take = query.take * page, skip = query.take * (page - 1))
             )
-        },
-        onSuccess = { posts ->
+        }, onSuccess = { posts ->
             _pagingState.value = pagingState.value.copy(
                 items = if (wasCleared) posts else pagingState.value.items + posts,
-                endReached = posts.isEmpty(),
-                isLoading = false
-            )
-        },
-        onError = { uiText ->
+                endReached = posts.isEmpty(), isLoading = false)
+        }, onError = { uiText ->
             _eventFlow.emit(UiEvent.ShowSnackbar(uiText))
         }
     )
+
+    fun loadNextPosts(
+        needToClear: Boolean,
+        filters: List<String> = query.filter.tags,
+        socialTag: String = SocialFilters.ALL.type
+    ) {
+        query.filter = query.filter.copy(tags = filters)
+        query.socialTag = socialTag
+        viewModelScope.launch {
+            if (needToClear) {
+                paginator.clear()
+                _pagingState.value = pagingState.value.copy(items = emptyList(), endReached = false, isLoading = false
+                )
+            }
+            wasCleared = false
+            paginator.loadNextItems()
+        }
+    }
 
     init {
         loadNextPosts(false)
@@ -92,27 +100,6 @@ class PostsViewModel @Inject constructor(
         }
     }
 
-    fun loadNextPosts(
-        needToClear: Boolean,
-        filters: List<String> = query.filter.tags,
-        socialTag: String = SocialFilters.ALL.type
-    ) {
-        query.filter = query.filter.copy(tags = filters)
-        query.socialTag = socialTag
-        viewModelScope.launch {
-            if (needToClear) {
-                paginator.clear()
-                _pagingState.value = pagingState.value.copy(
-                    items = emptyList(),
-                    endReached = false,
-                    isLoading = false
-                )
-            }
-            wasCleared = false
-            paginator.loadNextItems()
-        }
-    }
-
     private fun toggleLikeForPost(
         post: Post
     ) {
@@ -121,20 +108,9 @@ class PostsViewModel @Inject constructor(
                 posts = pagingState.value.items,
                 parentId = post.id,
                 onRequest = { isLiked ->
-                    postUseCases.likeToggleUseCase.execute(
-                        parentId = post.id,
-                        likeParent = Like.Post,
-                        isLiked = !post.isLiked
-                    )
-                },
+                    postUseCases.likeToggleUseCase.execute(parentId = post.id, likeParent = Like.Post, isLiked = !post.isLiked) },
                 onStateUpdated = { posts ->
                     _pagingState.value = pagingState.value.copy(
-                        items = posts
-                    )
-                }
-            )
-        }
+                        items = posts) }) }
     }
-
-
 }

@@ -3,7 +3,6 @@ package danyil.karabinovskyi.studenthub.components.toolbar
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,13 +32,13 @@ fun StandardToolbar(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(id = R.string.back),
-                        tint = StudentHubTheme.colors.iconPrimary
+                        tint = StudentHubTheme.colorsV2.iconPrimary
                     )
                 }
             }
         } else null,
         actions = navActions,
-        backgroundColor = StudentHubTheme.colors.uiFloated,
+        backgroundColor = StudentHubTheme.colorsV2.barsContent,
         elevation = 0.dp
     )
 }

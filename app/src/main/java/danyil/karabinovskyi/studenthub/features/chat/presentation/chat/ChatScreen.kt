@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -85,7 +81,7 @@ fun ChatScreen(
                 Text(
                     text = viewModel.chatName.value,
                     fontWeight = FontWeight.Bold,
-                    color = StudentHubTheme.colors.textPrimary
+                    color = StudentHubTheme.colorsV2.primary
                 )
             },
             onNavigateUp = {
@@ -93,18 +89,6 @@ fun ChatScreen(
             },
             modifier = Modifier.fillMaxWidth(),
             showBackArrow = true,
-            navActions = {
-                IconButton(onClick = {
-//                    todo addUserScreen
-//                    onNavigate(MainDestinations.CHAT_CREATE_EDIT + "/${-777}")
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "",
-                        tint = StudentHubTheme.colors.iconPrimary
-                    )
-                }
-            }
         )
         Box(modifier = Modifier.fillMaxSize()) {
             Column(

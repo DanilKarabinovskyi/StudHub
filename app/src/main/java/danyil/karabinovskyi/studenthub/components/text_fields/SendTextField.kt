@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.core.model.states.StandardTextFieldState
 import danyil.karabinovskyi.studenthub.ui.theme.SpaceLarge
+import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 
 @Composable
@@ -41,7 +41,7 @@ fun SendTextField(
 
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colors.surface)
+            .background(StudentHubTheme.colorsV2.background)
             .fillMaxWidth()
             .padding(SpaceLarge),
         verticalAlignment = Alignment.CenterVertically
@@ -49,12 +49,12 @@ fun SendTextField(
         TransparentTextField(
             text = state.text,
             onValueChange = onValueChange,
-            backgroundColor = MaterialTheme.colors.background,
+            backgroundColor = StudentHubTheme.colorsV2.background,
             modifier = Modifier
                 .weight(1f),
             hint = hint,
             focusRequester = focusRequester,
-            textLabel = "Comment",
+            textLabel = stringResource(id = R.string.comment),
             keyboardType = KeyboardType.Text,
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
@@ -76,8 +76,8 @@ fun SendTextField(
                 Icon(
                     imageVector = Icons.Default.Send,
                     tint = if (state.error == null && canSendMessage) {
-                        MaterialTheme.colors.primary
-                    } else MaterialTheme.colors.background,
+                        StudentHubTheme.colorsV2.iconPrimary
+                    } else StudentHubTheme.colorsV2.iconDisabled,
                     contentDescription = stringResource(id = R.string.send_comment)
                 )
             }

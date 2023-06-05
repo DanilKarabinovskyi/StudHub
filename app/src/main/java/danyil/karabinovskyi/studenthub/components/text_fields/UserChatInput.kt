@@ -42,6 +42,7 @@ import coil.request.ImageRequest
 import danyil.karabinovskyi.studenthub.R
 import danyil.karabinovskyi.studenthub.components.back_press.BackPressHandler
 import danyil.karabinovskyi.studenthub.components.dialogs.FunctionalityNotAvailablePopup
+import danyil.karabinovskyi.studenthub.components.view.StudDivider
 import danyil.karabinovskyi.studenthub.ui.theme.StudentHubTheme
 
 enum class InputSelector {
@@ -79,7 +80,7 @@ fun UserChatInput(
     // Used to decide if the keyboard should be shown
     var textFieldFocusState by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier.background(color = StudentHubTheme.colorsV2.barsBackground)) {
+    Column(modifier = modifier.background(color = StudentHubTheme.colorsV2.secondaryBackground)) {
         UserInputText(
             textFieldValue = textState,
             onTextChanged = { textState = it },
@@ -95,6 +96,7 @@ fun UserChatInput(
             },
             focusState = textFieldFocusState
         )
+        StudDivider()
         UserInputSelector(
             onSelectorChange = { currentInputSelector = it },
             sendMessageEnabled = textState.text.isNotBlank(),
@@ -258,7 +260,7 @@ private fun UserInputSelector(
             .height(72.dp)
             .wrapContentHeight()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-            .background(color = StudentHubTheme.colorsV2.barsBackground),
+            .background(color = StudentHubTheme.colorsV2.secondaryBackground),
         verticalAlignment = Alignment.CenterVertically
     ) {
         InputSelectorButton(
@@ -297,10 +299,9 @@ private fun UserInputSelector(
         }
         Spacer(modifier = Modifier.weight(1f))
 
-        val disabledContentColor = StudentHubTheme.colorsV2.disabled.copy(alpha = 0.3f)
-
         val buttonColors = ButtonDefaults.buttonColors(
-            disabledContentColor = disabledContentColor
+            disabledContentColor = StudentHubTheme.colorsV2.disabled,
+            backgroundColor = StudentHubTheme.colorsV2.buttonBackgroundPrimary
         )
 
         // Send button
@@ -310,10 +311,11 @@ private fun UserInputSelector(
             onClick = onMessageSent,
             colors = buttonColors,
             border = border,
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
         ) {
             Text(
                 stringResource(id = danyil.karabinovskyi.studenthub.R.string.send_caps),
+                color = if(sendMessageEnabled) StudentHubTheme.colorsV2.textHighEmphasis else StudentHubTheme.colorsV2.black,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
@@ -387,7 +389,7 @@ private fun UserInputText(
                     .height(64.dp)
                     .weight(1f)
                     .align(Alignment.Bottom)
-                    .background(color = StudentHubTheme.colorsV2.barsBackground)
+                    .background(color = StudentHubTheme.colorsV2.secondaryBackground)
             ) {
                 var lastFocusState by remember { mutableStateOf(false) }
                 BasicTextField(
@@ -408,19 +410,17 @@ private fun UserInputText(
                         imeAction = ImeAction.Send
                     ),
                     maxLines = 1,
-                    cursorBrush = SolidColor(LocalContentColor.current),
+                    cursorBrush = SolidColor(StudentHubTheme.colorsV2.primaryAccent),
                     textStyle = StudentHubTheme.typography.bodyMedium.copy(color = StudentHubTheme.colorsV2.textHighEmphasis)
                 )
 
-                val disableContentColor =
-                    StudentHubTheme.colorsV2.disabled
                 if (textFieldValue.text.isEmpty() && !focusState) {
                     Text(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
                             .padding(start = 32.dp),
                         text = stringResource(id = R.string.enter_a_message),
-                        style = StudentHubTheme.typography.bodyLarge.copy(color = disableContentColor)
+                        style = StudentHubTheme.typography.bodyLarge.copy(color = StudentHubTheme.colorsV2.textLowEmphasis)
                     )
                 }
             }
@@ -448,7 +448,7 @@ fun EmojiSelector(
                 onTextAdded,
                 modifier = Modifier
                     .padding(8.dp)
-                    .background(color = StudentHubTheme.colorsV2.barsBackground)
+                    .background(color = StudentHubTheme.colorsV2.secondaryBackground)
             )
         }
     }

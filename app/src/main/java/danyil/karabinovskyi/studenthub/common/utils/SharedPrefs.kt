@@ -9,7 +9,7 @@ import danyil.karabinovskyi.studenthub.core.data.entity.User
 class SharedPrefs (private val context: Context) {
     companion object {
         private const val PREF = "StudentHubPrefName"
-        private const val PREF_TOKEN = "user_token_v5"
+        private const val PREF_TOKEN = "user_token_v11"
         private const val USER = "user"
     }
 

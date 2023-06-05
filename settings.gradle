@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "StudentHub"
 include ':app'
+include ':app:document_scaner'

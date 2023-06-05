@@ -75,14 +75,14 @@ fun CreateChatScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = StudentHubTheme.colorsV2.appBackground)
+            .background(color = StudentHubTheme.colorsV2.background)
     ) {
         StandardToolbar(
             title = {
                 Text(
                     text = stringResource(id = R.string.create_chat),
                     fontWeight = FontWeight.Bold,
-                    color = StudentHubTheme.colors.textPrimary
+                    color = StudentHubTheme.colorsV2.primary
                 )
             },
             onNavigateUp = onNavigateUp,
@@ -104,7 +104,7 @@ fun CreateChatScreen(
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = R.string.choose_image),
-                    tint = StudentHubTheme.colors.iconPrimary
+                    tint = StudentHubTheme.colorsV2.iconPrimary
                 )
                 Image(painter =
                         rememberImagePainter(
@@ -118,7 +118,7 @@ fun CreateChatScreen(
                         .clip(CircleShape)
                         .border(
                             width = 1.dp,
-                            color = StudentHubTheme.colors.iconPrimary,
+                            color = StudentHubTheme.colorsV2.iconPrimary,
                             shape = CircleShape
                         )
                         .clickable {

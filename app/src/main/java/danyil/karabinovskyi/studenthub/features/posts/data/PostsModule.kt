@@ -1,16 +1,13 @@
 package danyil.karabinovskyi.studenthub.features.posts.data
 
+import android.content.Context
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import danyil.karabinovskyi.studenthub.common.utils.Constants
-import danyil.karabinovskyi.studenthub.common.utils.SharedPrefs
 import danyil.karabinovskyi.studenthub.core.di.NetworkModule
-import danyil.karabinovskyi.studenthub.features.auth.data.remote.api.AuthApi
-import danyil.karabinovskyi.studenthub.features.auth.data.repository.AuthRepositoryImpl
-import danyil.karabinovskyi.studenthub.features.auth.domain.AuthRepository
 import danyil.karabinovskyi.studenthub.features.posts.data.remote.api.PostsApi
 import danyil.karabinovskyi.studenthub.features.posts.data.repository.PostsRepositoryImpl
 import danyil.karabinovskyi.studenthub.features.posts.domain.PostsRepository
@@ -40,8 +37,9 @@ class PostsModule {
     fun providePostRepository(
         api: PostsApi,
         gson: Gson,
+        context: Context
     ): PostsRepository {
-        return PostsRepositoryImpl(api, gson)
+        return PostsRepositoryImpl(api, gson,context)
     }
 
     @Provides

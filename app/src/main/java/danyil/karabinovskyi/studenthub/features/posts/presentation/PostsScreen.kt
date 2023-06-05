@@ -1,6 +1,7 @@
 package danyil.karabinovskyi.studenthub.features.posts.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,19 +55,21 @@ fun PostsScreen(
         },
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetBackgroundColor = StudentHubTheme.colors.brand,
-        sheetContentColor = StudentHubTheme.colors.brand,
+        sheetBackgroundColor = StudentHubTheme.colorsV2.secondaryBackground,
+        sheetContentColor = StudentHubTheme.colorsV2.textHighEmphasis,
         scrimColor = androidx.compose.ui.graphics.Color.Transparent
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = StudentHubTheme.colorsV2.background)
         ) {
             StandardToolbar(
                 title = {
                     Text(
                         text = stringResource(id = R.string.posts),
                         fontWeight = FontWeight.Bold,
-                        color = StudentHubTheme.colors.textPrimary
+                        color = StudentHubTheme.colorsV2.primary
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -78,7 +81,7 @@ fun PostsScreen(
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "",
-                            tint = StudentHubTheme.colors.iconPrimary,
+                            tint = StudentHubTheme.colorsV2.iconPrimary,
                         )
                     }
                 }
@@ -88,7 +91,7 @@ fun PostsScreen(
                 showFilterIcon = true,
                 onShowFilters = { scope.launch { bottomSheetState.show() } },
                 onFilterClick = { filters ->
-                    viewModel.loadNextPosts(true,filters)
+                    viewModel.loadNextPosts(true, filters)
                 })
             Box(modifier = Modifier.fillMaxSize()) {
                 LazyColumn {

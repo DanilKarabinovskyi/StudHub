@@ -1,5 +1,6 @@
 package danyil.karabinovskyi.studenthub.features.posts.data.remote.entity
 
+import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Attachment
 import danyil.karabinovskyi.studenthub.features.posts.domain.entity.Post
 
 data class PostResponse(
@@ -10,6 +11,7 @@ data class PostResponse(
     val username: String,
     val likesCount: Int,
     val commentsCount: Int,
+    val attachments: List<Attachment>?,
     val id: Int,
     val authorId: Int,
     val tags: List<String>,
@@ -26,6 +28,7 @@ data class PostResponse(
             title = title,
             profilePictureUrl = profilePictureUrl,
             description = text,
+            attachments = attachments,
             likesCount = likesCount,
             commentsCount = commentsCount,
             isLiked = isLiked,

@@ -9,6 +9,7 @@ data class Post(
     val imageUrl: String,
     val profilePictureUrl: String,
     val description: String,
+    val attachments: List<Attachment>?,
     val title: String,
     val tags: List<String>,
     var likesCount: Int,

@@ -12,7 +12,7 @@ fun Context.sendSharePostIntent(postId: Int) {
             Intent.EXTRA_TEXT,
             getString(
                 R.string.share_intent_text,
-                "https://studentHub.com/$postId"
+                "https://student-hub.com/$postId"
             )
         )
         type = "text/plain"
